@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03 - Linux Monitoring</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <main class="section">
+        <div class="container">
+            <h1 class="title-1">Project 03: Linux Monitoring v1.0</h1>
+            
+            <div class="case-content">
+                <section class="case-section">
+                    <h2 class="title-2">Project Overview</h2>
+                    <p>Проект посвящен созданию комплексных инструментов мониторинга на Bash. Основная цель — автоматизировать сбор данных о системе (состояние RAM, сетевые интерфейсы, дисковое пространство) и разработать удобный интерфейс вывода с поддержкой цветовых схем и конфигурационных файлов.</p>
+                </section>
+
+                <section class="case-section">
+                    <h2 class="title-2">Key Accomplishments</h2>
+                    <ul class="skill-details">
+                        <li><strong>System Metrics Gathering:</strong> Написан модуль для извлечения данных об ОС, времени работы, сетевых параметрах и памяти с использованием <code>awk</code>, <code>sed</code> и <code>df/free</code>.</li>
+                        <li><strong>Visual Customization:</strong> Реализована гибкая система настройки цветов терминала (фон и текст) через аргументы командной строки и <code>config.txt</code>.</li>
+                        <li><strong>File System Analysis:</strong> Разработан скрипт для глубокого сканирования директорий, определяющий типы файлов, их размер и вычисляющий MD5-хэши для исполняемых файлов.</li>
+                        <li><strong>Performance Tracking:</strong> Внедрен механизм замера времени выполнения скриптов (Execution Time) с использованием наносекундной точности.</li>
+                        <li><strong>Robust Scripting:</strong> Реализована обработка ошибок, проверка прав доступа к директориям и валидация входных параметров.</li>
+                    </ul>
+                </section>
+
+                <section class="case-section">
+                    <h2 class="title-2">Configuration Examples</h2>
+                    <p>Ниже представлены ключевые фрагменты логики: сбор данных, управление цветами, анализ файлов и пример конфигурационного файла.</p>
+                    
+                    <div class="code-wrapper">
+                        <div>
+                            <div class="code-block-header"># info.sh (Сбор данных через awk)</div>
+                <pre class="code-block"><code>export IP=$(hostname -I | awk '{print $1}')
+export MASK=$(netstat -rn | awk 'NR==4 {print $3}')
+export RAM_TOTAL=$(free -m | awk '/Mem:/ {printf "%.3f GB", $2/1024}')
+export RAM_USED=$(free -m | awk '/Mem:/ {printf "%.3f GB", $3/1024}')</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-block-header"># printLogs3.sh (Цветовая палитра)</div>
+            <pre class="code-block"><code>WHITE='\033[37m'; RED='\033[31m'; GREEN='\033[32m'
+WHITE_BG='\033[47m'; RED_BG='\033[41m'
+
+case ${arr[i]} in
+    1) new_array[$i]=$WHITE_BG ;;
+    2) new_array[$i]=$RED_BG ;;
+esac</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="code-wrapper">
+                        <div>
+                            <div class="code-block-header"># main5.sh (Рекурсивный анализ файлов)</div>
+            <pre class="code-block"><code># Поиск TOP-10 тяжелых файлов и определение их типа
+find "$1" -type f -exec du -h {} + 2>/dev/null | sort -rh | head -n 10 | while read -r size file; do
+    file_type=$(file -b "$file" | cut -d, -f1)
+    printf "%d - %s, %s, %s\n" $NR "$file" "$size" "$file_type"
+done</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-block-header"># config.txt (Настройки интерфейса)</div>
+            <pre class="code-block"><code>column1_background=2
+column1_font_color=4
+column2_background=5
+column2_font_color=1
+# 1-white, 2-red, 3-green, 4-blue, 5-purple, 6-black</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <div style="text-align: center;">
+                    <a href="./school21-devops.html" class="btn-case-back">Back to DevOps Track</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07 - Container Orchestration</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <main class="section">
+        <div class="container">
+            <h1 class="title-1">Project 07: Container Orchestration (Docker Swarm)</h1>
+            
+            <div class="case-content">
+                <section class="case-section">
+                    <h2 class="title-2">Project Overview</h2>
+                    <p>Проект посвящен переходу от одиночных контейнеров к полноценной оркестрации микросервисного приложения. Основной задачей стала настройка кластера <strong>Docker Swarm</strong> на виртуальных машинах, поднятых через <strong>Vagrant</strong>, и обеспечение связи между сервисами через изолированные оверлейные сети.</p>
+                </section>
+
+                <section class="case-section">
+                    <h2 class="title-2">Key Accomplishments</h2>
+                    <ul class="skill-details">
+                        <li><strong>Microservices Dockerization:</strong> Созданы оптимизированные Dockerfile для Java-сервисов (openjdk-alpine). Решена проблема с зависимостями Maven путем интеграции установки <code>mvn</code> непосредственно в образ.</li>
+                        <li><strong>Infrastructure as Code:</strong> Написан <code>Vagrantfile</code> для автоматического развертывания трех узлов (1 Manager, 2 Workers) с автоматической установкой Docker через shell-скрипты.</li>
+                        <li><strong>Swarm Cluster Setup:</strong> Инициализирован кластер и настроено распределение контейнеров по узлам. Реализован механизм <code>stack deploy</code>.</li>
+                        <li><strong>Network Security:</strong> Настроена оверлейная сеть и Nginx-прокси, ограничивающий прямой доступ к внутренним API (gateway и session services).</li>
+                        <li><strong>Visual Monitoring:</strong> В кластер внедрен <strong>Portainer</strong> для визуального контроля состояния нод, сервисов и контейнеров в реальном времени.</li>
+                    </ul>
+                </section>
+
+                <section class="case-section">
+                    <h2 class="title-2">Configuration & Troubleshooting</h2>
+                    <p>Примеры исправленного Dockerfile и конфигурации оркестрации кластера.</p>
+                    
+                    <div class="code-wrapper">
+                        <div>
+                            <div class="code-block-header"># Dockerfile (Fixing Maven issues)</div>
+                <pre class="code-block"><code>FROM openjdk:8-jdk-alpine
+RUN apk add --no-cache maven bash
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src/ src/
+RUN mvn package -DskipTests</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-block-header"># Vagrantfile (Multi-node setup)</div>
+            <pre class="code-block"><code>Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"
+  config.vm.define "manager01" do |m|
+    m.vm.network "private_network", ip: "192.168.33.10"
+    m.vm.provision "shell", path: "install_docker.sh"
+  end
+end</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="code-wrapper">
+                        <div>
+                            <div class="code-block-header"># docker-compose.yml (Fragment)</div>
+            <pre class="code-block"><code>session-service:
+    build: "./services/session-service"
+    image: gisellet/session-service:latest
+    networks:
+        - hotel-overlay-net
+    depends_on:
+        - db</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-block-header"># Proxy Logic (Nginx)</div>
+            <pre class="code-block"><code>location /api/session {
+    proxy_pass http://session_service:8081;
+    proxy_set_header Host $host;
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <div style="text-align: center;">
+                    <a href="./school21-devops.html" class="btn-case-back">Back to DevOps Track</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

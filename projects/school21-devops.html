@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Journey - School 21</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-row">
+                <a href="../index.html" class="logo"><strong>Maxim</strong> Portfolio</a>
+                <ul class="nav-list">
+                    <li class="nav-list__item"><a href="../index.html" class="nav-list__link">Projects</a></li>
+                    <li class="nav-list__item"><a href="../skills.html" class="nav-list__link">Skills</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="section">
+        <div class="container">
+            <h1 class="title-1">DevOps Track: 8 Case Studies</h1>
+            <p style="text-align: center; margin-bottom: 50px; color: var(--text-color);">
+                Detailed documentation of infrastructure projects completed at School 21. 
+                Due to NDA policies, only architecture and configurations are shown.
+            </p>
+
+            <div class="projects-grid">
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">01</span>
+                        <h2 class="project-card__title">Linux Infrastructure & Admin</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Базовое администрирование Ubuntu Server: от настройки сетей (Netplan) до автоматизации задач через Cron и управления правами доступа.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>Linux</span> <span>SSH</span> <span>Bash</span> <span>Networking</span>
+                    </div>
+                    <a href="./01-project-linux-base.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">02</span>
+                        <h2 class="project-card__title">Linux Network Administration</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Глубокая настройка сетей: работа с ipcalc, статическая и динамическая маршрутизация (DHCP), настройка фаервола (iptables) и SSH-туннелирование.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>TCP/IP</span> <span>Routing</span> <span>DHCP</span> <span>SSH Tunneling</span> <span>Iptables</span>
+                    </div>
+                    <a href="./02-project-linux-base.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">03</span>
+                        <h2 class="project-card__title">Linux Monitoring v1.0</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Разработка bash-скриптов для автоматического сбора данных о состоянии системы: от простых выводов в консоль до сложных отчетов по файловой системе и настройки визуализации (цветовые схемы).
+                    </p>
+                    <div class="project-card__tags">
+                        <span>Bash Scripting</span> <span>System Research</span> <span>Automation</span> <span>Linux Monitoring</span>
+                    </div>
+                    <a href="./03-project-linux-monitoring.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">04</span>
+                        <h2 class="project-card__title">Linux Monitoring v2.0</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Продвинутый мониторинг: генерация логов и файлов, очистка системы, анализ трафика через GoAccess и развертывание стека Prometheus + Grafana для визуализации метрик.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>Prometheus</span> <span>Grafana</span> <span>Nginx logs</span> <span>GoAccess</span> <span>Stress Testing</span>
+                    </div>
+                    <a href="./04-project-linux-monitoring-v2.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">05</span>
+                        <h2 class="project-card__title">Simple Docker</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Разработка и контейнеризация веб-серверов: создание Dockerfile, работа с Docker Hub, настройка FastCGI на C, проксирование через Nginx и оркестрация мультиконтейнерных приложений с помощью Docker Compose.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>Docker</span> <span>Docker Compose</span> <span>Nginx</span> <span>FastCGI</span> <span>Dockle</span> <span>Containerization</span>
+                    </div>
+                    <a href="./05-simple_docker.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">06</span>
+                        <h2 class="project-card__title">Basic CI/CD</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Настройка полного цикла автоматизации: развертывание GitLab Runner, создание пайплайнов для сборки, статического анализа кода, интеграционных тестов и автоматического деплоя на удаленный сервер с уведомлениями в Telegram.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>GitLab CI/CD</span> <span>Bash</span> <span>YAML</span> <span>Static Analysis</span> <span>CD (Deploy)</span> <span>Telegram Bot API</span>
+                    </div>
+                    <a href="./06-basic-cicd.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">07</span>
+                        <h2 class="project-card__title">Container Orchestration</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Развертывание микросервисного приложения в кластере Docker Swarm. Настройка инфраструктуры через Vagrant, создание оверлейных сетей и мониторинг состояния системы через Portainer.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>Docker Swarm</span> <span>Vagrant</span> <span>Microservices</span> <span>Portainer</span> <span>Nginx Proxy</span>
+                    </div>
+                    <a href="./07-container-orchestration.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+
+                <article class="project-card-devops">
+                    <div class="project-card__header">
+                        <span class="project-card__number">08</span>
+                        <h2 class="project-card__title">Infrastructure Automation</h2>
+                    </div>
+                    <p class="project-card__desc">
+                        Автоматизация развертывания инфраструктуры с помощью Ansible. Настройка Service Discovery и Service Mesh через HashiCorp Consul для динамического взаимодействия микросервисов.
+                    </p>
+                    <div class="project-card__tags">
+                        <span>Ansible</span> <span>Consul</span> <span>Service Discovery</span> <span>Vagrant</span> <span>PostgreSQL</span>
+                    </div>
+                    <a href="./08-automation-tools.html" class="btn-outline">Read Full Case Study</a>
+                </article>
+                    
+                </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My portfolio</title>
+    <title>Maxim Gerasimov - Portfolio</title>
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
     <nav class="nav">
         <div class="container">
             <div class="nav-row">
-                <a href="./index.html" class="logo"><strong>My</strong> portfolio</a>
+                <a href="./index.html" class="logo"><strong>Maxim</strong> Portfolio</a>
                 <ul class="nav-list">
                     <li class="nav-list__item"><a href="./index.html" class="nav-list__link nav-list__link--active">Projects</a></li>
                     <li class="nav-list__item"><a href="./skills.html" class="nav-list__link">Skills</a></li>
@@ -23,62 +23,74 @@
 
     <header class="header">
         <div class="header__wrapper">
-            <h1 class="header__title">
-                Maxim Gerasimov
-            </h1>
-            <img src="./img/me4.jpg" alt="Photo of me" id="mine__photo">
+            <h1 class="header__title">Maxim Gerasimov</h1>
+            <img src="./img/me4.jpg" alt="Photo" id="mine__photo">
             <div class="header__text">
-                <p>Junoir Developer</p>
+                <p>Junior DevOps Engineer</p>
             </div>
-            <a href="https://github.com/dashboard" class="btn" target="_blank">Go to my GitHub</a>
+            <a href="https://github.com/MaximGerasimov1" class="btn">GitHub Profile</a>
         </div>
     </header>
 
     <main class="section">
         <div class="container">
-            <h2 class="title-1">My projects</h2>
+            <section class="devops-featured">
+                <h2 class="title-1">DevOps Infrastructure</h2>
+                <div class="project-large">
+                    <img src="./img/projects/School21.jpg" alt="DevOps Projects" class="project-large__img">
+                    <div class="project-large__content">
+                        <h3 class="project-large__title">School 21: DevOps Track</h3>
+                        <p class="project-large__text">
+                            Комплекс из 8 масштабных проектов по автоматизации и инфраструктуре. 
+                            Включает в себя глубокое администрирование Linux, контейнеризацию (Docker), 
+                            настройку сетей, CI/CD пайплайны и мониторинг систем. 
+                            Это фундамент моего опыта в управлении серверными средами.
+                        </p>
+                        <a href="./projects/school21-devops.html" class="btn-outline">View DevOps Case Studies</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="development-archive" style="margin-top: 70px;">
+                <h2 class="title-1">Development Experience</h2>
+                <p style="text-align: center; margin-bottom: 30px; color: var(--text-color);">
+                    My software engineering background allows me to understand the Software Development Life Cycle from the inside.
+                </p>
+                
                 <ul class="projects">
                     <li class="project">
-                        <img src="./img/projects/c1.jpg" alt="Project on C" class="project__img">
-                        <div class="project__links">
-                            <h3 class="project__title">My projects on C</h3>
-                            <ul>
-                                <li><a href="https://github.com/MaximGerasimov1/C/tree/main/Lab1" target="_blank">Программа для работы с базой данных в Microsoft VS 2008</a></li>
-                                <li><a href="https://github.com/MaximGerasimov1/C/tree/main/Lab1_WF" target="_blank">Консольное приложение в Microsoft VS 2008 для работы с базой данных</a></li>
-                            </ul>
+                        <h3 class="project__title">C Projects</h3>
+                        <p class="project__text">Algorithms, system programming, and low-level memory management.</p>
+                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
+                            <a href="https://github.com/MaximGerasimov1/C" class="btn-outline" target="_blank">View on GitHub</a>
                         </div>
                     </li>
+
                     <li class="project">
-                        <img src="./img/projects/с++.png" alt="Project on C++" class="project__img">
-                        <div class="project__links">
-                            <h3 class="project__title">My projects on C++</h3>
-                            <ul>
-                                <li><a href="https://github.com/MaximGerasimov1/C-plus-plus/tree/main/OOP-1-TASK(Cadastral_registration_of_land)" target="_blank">Программа для учета и управления данными о земельных участках, реализованная на C++</a></li>
-                                <li><a href="https://github.com/MaximGerasimov1/C-plus-plus/tree/main/OPP-2-TASK" target="_blank">Программа для моделирования и работы с характеристиками компьютерных компонентов на C++ с использованием принципов ООП</a></li>
-                                <li><a href="https://github.com/MaximGerasimov1/C-plus-plus/tree/main/OOP-3-TASK" target="_blank">Программа для управления базой данных компонентов персональных компьютеров на C++ с использованием принципов ООП и двусвязных списков.</a></li>
-                                <li><a href="https://github.com/MaximGerasimov1/C-plus-plus/tree/main/Application" target="_blank">Консольное приложение на С++ с использованием QT и ООП</a></li>
-                            </ul>
+                        <h3 class="project__title">C++ Projects</h3>
+                        <p class="project__text">Object-oriented programming, STL, and complex data structures.</p>
+                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
+                            <a href="https://github.com/MaximGerasimov1/C-plus-plus" class="btn-outline" target="_blank">View on GitHub</a>
                         </div>
                     </li>
+
                     <li class="project">
-                        <img src="./img/projects/web-develop.png" alt="Web-development projects" class="project__img">
-                        <div class="project__links">
-                            <h3 class="project__title">My web-development projects</h3>
-                            <ul>
-                                <li><a href="https://github.com/MaximGerasimov1/my-projects" target="_blank">Репозиторий со всеми проектами по веб-разработке</a></li>
-                            </ul>
+                        <h3 class="project__title">Web Development</h3>
+                        <p class="project__text">Fullstack experience: pure PHP, MVC architecture, and responsive frontend.</p>
+                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
+                            <a href="https://github.com/MaximGerasimov1/my-web-projects" class="btn-outline" target="_blank">View on GitHub</a>
                         </div>
                     </li>
+                    
                     <li class="project">
-                        <img src="./img/projects/School21.jpg" alt="School 21 projects" class="project__img">
-                        <div class="project__links">
-                            <h3 class="project__title">School 21 projects</h3>
-                            <ul>
-                                <li><a href="./school21.html" target="_blank">Проекты из Школы 21</a></li>
-                            </ul>
+                        <h3 class="project__title">Python & SQL</h3>
+                        <p class="project__text">Automation scripts and database design/optimization.</p>
+                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
+                            <a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL" class="btn-outline" target="_blank">View on GitHub</a>
                         </div>
                     </li>
                 </ul>
+            </section>
         </div>
     </main>
 
@@ -89,13 +101,15 @@
                     <li class="social__item"><a href="https://vk.com/gmaxim2" target="_blank"><img src="./img/icons/vk.svg" alt="link"></a></li>
                     <li class="social__item"><a href="https://t.me/gisellet3" target="_blank"><img src="./img/icons/tg.svg" alt="link"></a></li>
                     <li class="social__item"><a href="https://github.com/dashboard" target="_blank"><img src="./img/icons/gitHub.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://hh.ru/resume/8d4c6741ff0eeb13270039ed1f506d357a5465?from=share_ios" target="_blank"><img src="./img/icons/hhru.png" alt="link"></a></li>
+                    <li class="social__item"><a href="https://hh.ru/resume/8d4c6741ff0eeb13270039ed1f506d357a5465" target="_blank"><img src="./img/icons/hhru.png" alt="link"></a></li>
                 </ul>
                 <div class="copyright">
-                    <p>©2025 frontend-dev.com</p>
+                    <p>©2026 maxim-devops.com</p>
                 </div>
             </div>
         </div>
     </footer>
 </body>
 </html>
+
+

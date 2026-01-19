@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08 - Infrastructure Automation</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <main class="section">
+        <div class="container">
+            <h1 class="title-1">Project 08: Infrastructure Automation & Service Discovery</h1>
+            
+            <div class="case-content">
+                <section class="case-section">
+                    <h2 class="title-2">Project Overview</h2>
+                    <p>Проект сфокусированный на <strong>Infrastructure as Code (IaC)</strong>. Задача заключалась в полной автоматизации настройки парка виртуальных машин с помощью <strong>Ansible</strong> и реализации динамического обнаружения сервисов (Service Discovery) через <strong>Consul</strong>.</p>
+                </section>
+
+                <section class="case-section">
+                    <h2 class="title-2">Key Accomplishments</h2>
+                    <ul class="skill-details">
+                        <li><strong>Ansible Roles Development:</strong> Создана модульная структура ролей для установки Consul (Server/Client), базы данных PostgreSQL и Java-микросервиса.</li>
+                        <li><strong>Service Discovery & Mesh:</strong> Настроен Consul Connect для обеспечения безопасной сетевой связности между API и DB без использования жестко прописанных IP-адресов.</li>
+                        <li><strong>Automated Provisioning:</strong> Развернут кластер из 3-х нод (Manager, API, DB) через Vagrant, где вся настройка софта происходит «одной кнопкой» через Ansible Playbook.</li>
+                        <li><strong>Deep Troubleshooting:</strong> Проведен дебаг микросервиса, в ходе которого выявлена ошибка типизации данных (Long vs Integer) в Spring-контроллере при работе с PostgreSQL.</li>
+                        <li><strong>Remote Configuration:</strong> Реализовано управление конфигурациями через Jinja2 шаблоны для генерации файлов <code>consul.hcl</code>.</li>
+                    </ul>
+                </section>
+
+                <section class="case-section">
+                    <h2 class="title-2">Automation Workflow</h2>
+                    <p>Ниже представлены фрагменты основного плейбука и конфигурации Consul Connect, которые связывают сервисы в единую экосистему.</p>
+                    
+                    <div class="code-wrapper">
+                        <div>
+                            <div class="code-block-header"># site.yml (Main Playbook)</div>
+                <pre class="code-block"><code>- hosts: consul_server
+  roles:
+    - install_consul_server
+
+- hosts: api, db
+  roles:
+    - install_consul_client
+
+- hosts: db
+  roles:
+    - install_db</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-block-header"># consul_client.hcl (Connect)</div>
+            <pre class="code-block"><code>connect {
+  sidecar_service {
+    proxy {
+      upstreams {
+        destination_name = "db"
+        local_bind_port = 5432
+      }
+    }
+  }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="code-wrapper">
+                        <div>
+                            <div class="code-block-header"># Ansible Task (Service Install)</div>
+            <pre class="code-block"><code>- name: Start the hotels-service
+  systemd:
+    name: hotels
+    state: started
+    enabled: yes
+    daemon_reload: yes</code></pre>
+                        </div>
+                        <div>
+                            <div class="code-block-header"># Verification (Consul UI)</div>
+            <pre class="code-block"><code># Проверка регистрации сервисов
+consul catalog services
+# Доступ через проброшенный порт
+http://localhost:8500/ui</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                
+
+                <div style="text-align: center;">
+                    <a href="./school21-devops.html" class="btn-case-back">Back to DevOps Track</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
