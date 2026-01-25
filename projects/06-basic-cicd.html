@@ -9,7 +9,7 @@
 <body>
     <main class="section">
         <div class="container">
-            <h1 class="title-1">Project 06: Basic CI/CD</h1>
+            <h1 class="title-1">Project 06: Basic CI/CD Pipeline</h1>
             
             <div class="case-content">
                 <section class="case-section">
@@ -28,6 +28,8 @@
                     </ul>
                 </section>
 
+                
+
                 <section class="case-section">
                     <h2 class="title-2">CI/CD Configuration & Scripting</h2>
                     <p>Примеры конфигурации пайплайна и скрипта уведомлений, которые обеспечивают работу автоматизации.</p>
@@ -35,7 +37,7 @@
                     <div class="code-wrapper">
                         <div>
                             <div class="code-block-header"># .gitlab-ci.yml (Workflow)</div>
-                <pre class="code-block"><code>stages:
+                            <pre class="code-block"><code>stages:
   - build
   - test
   - deploy
@@ -52,7 +54,7 @@ build_job:
                         </div>
                         <div>
                             <div class="code-block-header"># notify.sh (Telegram Bot)</div>
-            <pre class="code-block"><code>#!/bin/bash
+                            <pre class="code-block"><code>#!/bin/bash
 STR="Project: $CI_PROJECT_NAME\nStatus: $1"
 URL="https://api.telegram.org/bot$TOKEN/sendMessage"
 
@@ -63,7 +65,7 @@ curl -s -X POST $URL -d chat_id=$ID -d text="$STR"</code></pre>
                     <div class="code-wrapper">
                         <div>
                             <div class="code-block-header"># style_test (Clang-format)</div>
-            <pre class="code-block"><code>style_check:
+                            <pre class="code-block"><code>style_check:
   stage: test
   script:
     - clang-format -n *.c
@@ -72,7 +74,7 @@ curl -s -X POST $URL -d chat_id=$ID -d text="$STR"</code></pre>
                         </div>
                         <div>
                             <div class="code-block-header"># deploy.sh (Remote Transfer)</div>
-            <pre class="code-block"><code>#!/bin/bash
+                            <pre class="code-block"><code>#!/bin/bash
 # Копирование на вторую ВМ
 scp ./build/s21_matrix user@10.20.0.3:/usr/local/bin/
 ssh user@10.20.0.3 "ls -la /usr/local/bin/"</code></pre>
@@ -80,10 +82,18 @@ ssh user@10.20.0.3 "ls -la /usr/local/bin/"</code></pre>
                     </div>
                 </section>
 
-                
+                <section class="case-section" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; margin-top: 40px;">
+                    <h2 class="title-2">Source Code & Automation</h2>
+                    <p style="margin-bottom: 25px; opacity: 0.8;">Полная конфигурация GitLab CI, скрипты уведомлений и логи выполнения пайплайнов доступны в репозитории.</p>
+                    
+                    <a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/cicd-pipeline-lab" target="_blank" class="btn" style="display: inline-flex; align-items: center; padding: 12px 25px; background-color: #24292e; color: #fff; border-radius: 5px; text-decoration: none; font-weight: 500; transition: transform 0.2s;">
+                        <img src="../img/icons/gitHub.svg" alt="" style="width: 20px; filter: invert(1); margin-right: 10px;">
+                        Explore Repository on GitHub
+                    </a>
+                </section>
 
-                <div style="text-align: center;">
-                    <a href="./school21-devops.html" class="btn-case-back">Back to DevOps Track</a>
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="./school21-devops.html" class="btn-case-back" style="opacity: 0.6; font-size: 0.9rem; text-decoration: none;">← Back to DevOps Track</a>
                 </div>
             </div>
         </div>

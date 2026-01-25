@@ -35,14 +35,14 @@
                     <div class="code-wrapper">
                         <div>
                             <div class="code-block-header"># info.sh (Сбор данных через awk)</div>
-                <pre class="code-block"><code>export IP=$(hostname -I | awk '{print $1}')
+                            <pre class="code-block"><code>export IP=$(hostname -I | awk '{print $1}')
 export MASK=$(netstat -rn | awk 'NR==4 {print $3}')
 export RAM_TOTAL=$(free -m | awk '/Mem:/ {printf "%.3f GB", $2/1024}')
 export RAM_USED=$(free -m | awk '/Mem:/ {printf "%.3f GB", $3/1024}')</code></pre>
                         </div>
                         <div>
                             <div class="code-block-header"># printLogs3.sh (Цветовая палитра)</div>
-            <pre class="code-block"><code>WHITE='\033[37m'; RED='\033[31m'; GREEN='\033[32m'
+                            <pre class="code-block"><code>WHITE='\033[37m'; RED='\033[31m'; GREEN='\033[32m'
 WHITE_BG='\033[47m'; RED_BG='\033[41m'
 
 case ${arr[i]} in
@@ -55,7 +55,7 @@ esac</code></pre>
                     <div class="code-wrapper">
                         <div>
                             <div class="code-block-header"># main5.sh (Рекурсивный анализ файлов)</div>
-            <pre class="code-block"><code># Поиск TOP-10 тяжелых файлов и определение их типа
+                            <pre class="code-block"><code># Поиск TOP-10 тяжелых файлов и определение их типа
 find "$1" -type f -exec du -h {} + 2>/dev/null | sort -rh | head -n 10 | while read -r size file; do
     file_type=$(file -b "$file" | cut -d, -f1)
     printf "%d - %s, %s, %s\n" $NR "$file" "$size" "$file_type"
@@ -63,7 +63,7 @@ done</code></pre>
                         </div>
                         <div>
                             <div class="code-block-header"># config.txt (Настройки интерфейса)</div>
-            <pre class="code-block"><code>column1_background=2
+                            <pre class="code-block"><code>column1_background=2
 column1_font_color=4
 column2_background=5
 column2_font_color=1
@@ -72,8 +72,18 @@ column2_font_color=1
                     </div>
                 </section>
 
-                <div style="text-align: center;">
-                    <a href="./school21-devops.html" class="btn-case-back">Back to DevOps Track</a>
+                <section class="case-section" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; margin-top: 40px;">
+                    <h2 class="title-2">Source Code & Documentation</h2>
+                    <p style="margin-bottom: 25px; opacity: 0.8;">Полный набор Bash-инструментов, скрипты фильтрации данных и примеры визуализации мониторинга доступны в репозитории.</p>
+                    
+                    <a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/sys-monitor-scripts" target="_blank" class="btn" style="display: inline-flex; align-items: center; padding: 12px 25px; background-color: #24292e; color: #fff; border-radius: 5px; text-decoration: none; font-weight: 500; transition: transform 0.2s;">
+                        <img src="../img/icons/gitHub.svg" alt="" style="width: 20px; filter: invert(1); margin-right: 10px;">
+                        Explore Repository on GitHub
+                    </a>
+                </section>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="./school21-devops.html" class="btn-case-back" style="opacity: 0.6; font-size: 0.9rem; text-decoration: none;">← Back to DevOps Track</a>
                 </div>
             </div>
         </div>

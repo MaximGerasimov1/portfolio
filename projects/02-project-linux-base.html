@@ -36,7 +36,7 @@
                     <div class="code-wrapper">
                         <div>
                             <div class="code-block-header"># /etc/netplan/00-installer-config.yaml</div>
-                <pre class="code-block"><code>network:
+                            <pre class="code-block"><code>network:
   version: 2
   ethernets:
     enp0s8:
@@ -46,14 +46,14 @@
                         </div>
                         <div>
                             <div class="code-block-header"># Firewall NAT Rules (r2)</div>
-            <pre class="code-block"><code>iptables -F
+                            <pre class="code-block"><code>iptables -F
 iptables -F -t nat
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -p icmp -j ACCEPT</code></pre>
                         </div>
                         <div>
                             <div class="code-block-header"># /etc/dhcp/dhcpd.conf</div>
-            <pre class="code-block"><code>subnet 192.168.100.0 netmask 255.255.255.192 {
+                            <pre class="code-block"><code>subnet 192.168.100.0 netmask 255.255.255.192 {
     range 192.168.100.2 192.168.100.10;
     option routers 192.168.100.1;
     option domain-name-servers 8.8.8.8;
@@ -62,8 +62,18 @@ iptables -A FORWARD -p icmp -j ACCEPT</code></pre>
                     </div>
                 </section>
 
-                <div style="text-align: center;">
-                    <a href="./school21-devops.html" class="btn-case-back">Back to DevOps Track</a>
+                <section class="case-section" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; margin-top: 40px;">
+                    <h2 class="title-2">Source Code & Documentation</h2>
+                    <p style="margin-bottom: 25px; opacity: 0.8;">Топология сети, результаты тестов iperf3  и подробное описание проекта доступны в репозитории.</p>
+                    
+                    <a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/net-infra-design" target="_blank" class="btn" style="display: inline-flex; align-items: center; padding: 12px 25px; background-color: #24292e; color: #fff; border-radius: 5px; text-decoration: none; font-weight: 500; transition: transform 0.2s;">
+                        <img src="../img/icons/gitHub.svg" alt="" style="width: 20px; filter: invert(1); margin-right: 10px;">
+                        Explore Repository on GitHub
+                    </a>
+                </section>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <a href="./school21-devops.html" class="btn-case-back" style="opacity: 0.6; font-size: 0.9rem; text-decoration: none;">← Back to DevOps Track</a>
                 </div>
             </div>
         </div>
