@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Оркестрация микросервисов в Docker Swarm — Максим Герасимов</title>
+<meta name="description" content="Приложение из 7 сервисов в кластере Docker Swarm: стенд на Vagrant, оверлейная сеть, Nginx единой точкой входа, Portainer.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/swarm-microservices.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Оркестрация микросервисов в Docker Swarm">
+<meta property="og:description" content="Приложение из 7 сервисов в кластере Docker Swarm: стенд на Vagrant, оверлейная сеть, Nginx единой точкой входа, Portainer.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/swarm-microservices.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">orchestration</span></div>
+      <h1 class="case__title">Оркестрация микросервисов в Docker Swarm</h1>
+      <p class="case__sub">Начало сквозной линии: одно микросервисное приложение —
+        7 сервисов на Spring Boot, PostgreSQL и RabbitMQ — которое дальше проходит
+        через проекты 08–13.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Приложение из семи сервисов не помещается на одну машину и не управляется
+          командами <code>docker run</code>: нужны распределение контейнеров по узлам,
+          сеть между ними и единая точка входа, закрывающая внутренние API
+          от прямого доступа.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Контейнеризация сервисов.</strong> Написал Dockerfile
+            для Java-сервисов на базе <code>openjdk-alpine</code>. Отдельно решил
+            проблему сборки: зависимости Maven подтягиваются слоем
+            <code>mvn dependency:go-offline</code> до копирования исходников,
+            чтобы пересборка не тянула их заново.</li>
+          <li><strong>Стенд как код.</strong> <code>Vagrantfile</code> разворачивает
+            три узла (1 manager, 2 worker) и устанавливает на них Docker
+            shell-скриптами — кластер собирается с нуля одной командой.</li>
+          <li><strong>Кластер Swarm.</strong> Инициализировал кластер, подключил
+            воркеров, развернул приложение через <code>docker stack deploy</code>,
+            настроил распределение сервисов по узлам.</li>
+          <li><strong>Сеть и изоляция.</strong> Создал оверлейную сеть для
+            взаимодействия сервисов между узлами и поставил Nginx входной точкой:
+            наружу открыты только публичные маршруты, gateway и session напрямую
+            недоступны.</li>
+          <li><strong>Наблюдение за кластером.</strong> Развернул Portainer
+            для просмотра состояния узлов, сервисов и контейнеров.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Приложение разворачивается в кластере одной командой и переживает
+            падение отдельного контейнера — Swarm перезапускает задачу сам.</li>
+          <li>Топология воспроизводима: <code>vagrant up</code> собирает те же три узла
+            с той же конфигурацией, независимо от состояния рабочей машины.</li>
+          <li>Внутренние сервисы недоступны снаружи напрямую — трафик идёт
+            только через Nginx.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Docker</li><li>Docker Swarm</li><li>docker stack</li><li>overlay network</li>
+        <li>Vagrant</li><li>Nginx</li><li>Portainer</li><li>Java / Maven</li>
+        <li>Spring Boot</li><li>PostgreSQL</li><li>RabbitMQ</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/swarm-microservices" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./gitlab-ci-basics.html">← Первый CI/CD</a>
+      <a href="./ansible-consul-provisioning.html">Ansible и Consul →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

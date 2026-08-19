@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проекты — Максим Герасимов, DevOps</title>
+<meta name="description" content="Инженерные проекты по инфраструктуре: Linux и сети, Bash-автоматизация, Docker, Docker Swarm, Ansible и Consul, Prometheus и Loki, Kubernetes, Helm, Kustomize, GitLab CI.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Проекты — Максим Герасимов, DevOps">
+<meta property="og:description" content="От администрирования Linux и сетевого стенда до Kubernetes с CI/CD и мониторингом.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container">
+
+    <header class="page-head">
+      <h1 class="page-title">Инженерные проекты</h1>
+      <p class="page-lede">
+        Проекты сгруппированы по инженерным слоям и внутри группы идут
+        в порядке выполнения. Блок «микросервисная система» — это одна
+        и та же система, которая переезжает из Docker Swarm в Kubernetes
+        и обрастает наблюдаемостью и автоматической поставкой.
+      </p>
+    </header>
+
+    <section class="section">
+      <div class="row">
+        <h2 class="key">Инфраструктура<br>и эксплуатация</h2>
+        <div>
+          <ul class="cards" style="margin-top:0;">
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">os</span></div>
+              <h3><a href="./linux-server-baseline.html">Базовое администрирование Linux-сервера</a></h3>
+              <p>Сервер из установочного образа приведён в рабочее состояние: статическая сеть, защищённый SSH, служба времени, диагностика дисков и журналов.</p>
+              <ul class="chips"><li>Linux</li><li>systemd</li><li>SSH</li><li>cron</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">network</span></div>
+              <h3><a href="./linux-network-lab.html">Сетевой стенд: маршрутизация, файрвол, NAT</a></h3>
+              <p>Пять машин, два маршрутизатора: расчёт подсетей, статические и динамические маршруты, iptables, NAT, диагностика потерь трафика.</p>
+              <ul class="chips"><li>TCP/IP</li><li>iptables</li><li>DHCP</li><li>NAT</li><li>iperf3</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">automation</span></div>
+              <h3><a href="./bash-system-report.html">Bash-инструментарий сбора состояния системы</a></h3>
+              <p>Десяток ручных команд диагностики заменён модульными скриптами с внешней конфигурацией вывода и валидацией ввода.</p>
+              <ul class="chips"><li>Bash</li><li>awk / sed</li><li>/proc</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">monitoring</span></div>
+              <h3><a href="./linux-logs-and-metrics.html">Логи, обслуживание ФС и первые метрики</a></h3>
+              <p>Воспроизведение переполнения диска, выборочная очистка по трём критериям, разбор access-логов, стек Prometheus + Grafana и свой экспортёр.</p>
+              <ul class="chips"><li>Prometheus</li><li>Grafana</li><li>GoAccess</li><li>Bash</li></ul>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="row">
+        <h2 class="key">Контейнеры<br>и поставка</h2>
+        <div>
+          <ul class="cards" style="margin-top:0;">
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">containers</span></div>
+              <h3><a href="./docker-nginx-fastcgi.html">Контейнеризация: Dockerfile, Compose, Dockle</a></h3>
+              <p>Свой образ Nginx с FastCGI-сервером на C, разделение на два контейнера, запуск не от root, устранение замечаний линтера образов.</p>
+              <ul class="chips"><li>Docker</li><li>Compose</li><li>Nginx</li><li>Dockle</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">ci/cd</span></div>
+              <h3><a href="./gitlab-ci-basics.html">Первый CI/CD-пайплайн на GitLab CI</a></h3>
+              <p>GitLab Runner, стадии build → стиль → тесты → деплой по SSH; уведомление о статусе каждой стадии в Telegram через Bot API.</p>
+              <ul class="chips"><li>GitLab CI</li><li>Runner</li><li>Bash</li><li>SSH</li></ul>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="row">
+        <h2 class="key">Микросервисная<br>система</h2>
+        <div>
+          <p style="margin:0 0 4px; color:var(--muted); font-size:14.5px; max-width:66ch;">
+            Одно приложение из семи сервисов (Spring Boot, PostgreSQL, RabbitMQ),
+            семь проектов подряд.
+          </p>
+          <ul class="cards">
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">orchestration</span></div>
+              <h3><a href="./swarm-microservices.html">Оркестрация микросервисов в Docker Swarm</a></h3>
+              <p>Приложение в кластере из трёх узлов: стенд через Vagrant, оверлейная сеть, Nginx как единая точка входа, Portainer.</p>
+              <ul class="chips"><li>Docker Swarm</li><li>Vagrant</li><li>Nginx</li><li>Portainer</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">provisioning</span></div>
+              <h3><a href="./ansible-consul-provisioning.html">Infrastructure as Code: Ansible и Consul</a></h3>
+              <p>Роли и шаблоны Jinja2 вместо ручной настройки узлов; на втором стенде — service discovery через Consul с sidecar-прокси Envoy.</p>
+              <ul class="chips"><li>Ansible</li><li>Consul</li><li>Envoy</li><li>Vagrant</li><li>PostgreSQL</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">observability</span></div>
+              <h3><a href="./observability-stack.html">Мониторинг, логи и алертинг</a></h3>
+              <p>Метрики приложения через Actuator и Micrometer, метрики узлов и контейнеров, логи в Loki, дашборд в Grafana, три правила алертинга.</p>
+              <ul class="chips"><li>Prometheus</li><li>Loki</li><li>Grafana</li><li>Alertmanager</li><li>Micrometer</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">orchestration</span></div>
+              <h3><a href="./k8s-manifests.html">Переезд приложения в Kubernetes</a></h3>
+              <p>Собственные манифесты: ConfigMap, Secret, деплойменты и сервисы девяти компонентов; замер простоя при Recreate и RollingUpdate.</p>
+              <ul class="chips"><li>Kubernetes</li><li>ConfigMap / Secret</li><li>Bash</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">orchestration</span></div>
+              <h3><a href="./k8s-k3s-cluster.html">Кластер k3s: Ingress, TLS и хранилище</a></h3>
+              <p>Три узла k3s без Traefik, ingress-nginx единой точкой входа, cert-manager с автопродлением сертификата, PV/PVC под базу данных.</p>
+              <ul class="chips"><li>k3s</li><li>ingress-nginx</li><li>cert-manager</li><li>PV / PVC</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">packaging</span></div>
+              <h3><a href="./k8s-helm-kustomize.html">Шаблонизация конфигурации: Kustomize и Helm</a></h3>
+              <p>Одна и та же конфигурация собрана двумя способами: база и оверлей в Kustomize, чарт с генерацией сервисов циклом по values в Helm.</p>
+              <ul class="chips"><li>Kustomize</li><li>Helm</li><li>Kubernetes</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">ci/cd</span></div>
+              <h3><a href="./k8s-cicd-pipeline.html">CI/CD-пайплайн в Kubernetes</a></h3>
+              <p>GitLab Runner внутри кластера, настройка RBAC под выкат, стадии build → тесты (Maven, Newman) → staging через <code>helm upgrade</code> по тегу.</p>
+              <ul class="chips"><li>GitLab CI</li><li>Helm</li><li>RBAC</li><li>Newman</li></ul>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="row">
+        <h2 class="key">Тестовые<br>задания</h2>
+        <div>
+          <ul class="cards" style="margin-top:0;">
+            <li class="card">
+              <div class="card__top"><span class="card__layer">containers</span></div>
+              <h3><a href="./docker-nginx-proxy.html">Python-приложение за обратным прокси Nginx</a></h3>
+              <p>Два контейнера с ужесточёнными настройками: non-root, read-only ФС, <code>cap_drop: ALL</code>, старт прокси по healthcheck бэкенда, конфигурация через переменные окружения.</p>
+              <ul class="chips"><li>Docker</li><li>Compose</li><li>Nginx</li><li>Python</li></ul>
+            </li>
+
+            <li class="card">
+              <div class="card__top"><span class="card__layer">build · ci/cd</span></div>
+              <h3><a href="./sqlite-build-automation.html">Сборка нативной библиотеки: CMake, Docker, CI</a></h3>
+              <p>Один исходный код собирается под Linux и Windows, в multi-stage образе, на подготовленной Ansible виртуальной машине и в конвейере GitLab CI с публикацией образа в registry.</p>
+              <ul class="chips"><li>CMake</li><li>Docker</li><li>GitLab CI</li><li>Ansible</li><li>Conan</li></ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Разработческий<br>бэкграунд</h2>
+      <div class="prose">
+        <p>
+          До перехода в инфраструктуру — программирование: C и C++ (алгоритмы,
+          ООП, настольное приложение на Qt) и веб на PHP (собственный MVC-каркас
+          и Laravel). Помогает понимать, что именно едет по пайплайну и почему
+          падает сборка.
+        </p>
+        <ul class="chips" style="margin-top:14px;">
+          <li><a href="https://github.com/MaximGerasimov1/c-cpp-projects" target="_blank" rel="noopener">C и C++</a></li>
+          <li><a href="https://github.com/MaximGerasimov1/php-web-projects" target="_blank" rel="noopener">PHP</a></li>
+          <li><a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/python_projects" target="_blank" rel="noopener">Python</a></li>
+          <li><a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/sql_projects" target="_blank" rel="noopener">SQL</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="mailto:m.s.gerasimov@mail.ru">Почта</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

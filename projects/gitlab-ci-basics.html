@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Первый CI/CD-пайплайн на GitLab CI — Максим Герасимов</title>
+<meta name="description" content="GitLab Runner и конвейер build - проверка стиля - тесты - деплой по SSH, с уведомлением о статусе стадий в Telegram.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/gitlab-ci-basics.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Первый CI/CD-пайплайн на GitLab CI">
+<meta property="og:description" content="GitLab Runner и конвейер build - проверка стиля - тесты - деплой по SSH, с уведомлением о статусе стадий в Telegram.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/gitlab-ci-basics.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">ci/cd</span></div>
+      <h1 class="case__title">Первый CI/CD-пайплайн на GitLab CI</h1>
+      <p class="case__sub">Первая автоматизация поставки: от коммита до приложения
+        на сервере без ручных шагов.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Сборка, проверка стиля, тесты и выкладка выполнялись вручную и
+          в произвольном порядке — ошибку легко было выкатить незамеченной.
+          Нужно было связать шаги в конвейер, который выполняется на каждый коммит
+          и останавливается на первой же неудаче.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Развернул GitLab Runner</strong> на отдельной машине
+            и зарегистрировал его в проекте.</li>
+          <li><strong>Стадия build</strong> — сборка проекта через Makefile.</li>
+          <li><strong>Стадия code style</strong> — статическая проверка
+            <code>clang-format</code>; несоответствие стилю останавливает конвейер
+            до запуска тестов.</li>
+          <li><strong>Стадия test</strong> — модульные тесты; падение теста
+            блокирует выкладку.</li>
+          <li><strong>Стадия deploy</strong> — доставка собранного артефакта
+            на целевой сервер по SSH и его запуск.</li>
+          <li><strong>Уведомления.</strong> Написал Bash-скрипт, который
+            по завершении пайплайна отправляет статус каждой стадии в Telegram
+            через Bot API.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Ошибка сборки, нарушение стиля или упавший тест обнаруживаются
+            автоматически и не доходят до сервера.</li>
+          <li>Выкладка перестала быть ручной операцией: после успешного прохождения
+            стадий приложение оказывается на сервере само, а статус приходит
+            в мессенджер.</li>
+          <li>Этот пайплайн — прототип конвейера, который позже
+            <a href="./k8s-cicd-pipeline.html">собирается уже внутри Kubernetes-кластера</a>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>GitLab CI</li><li>GitLab Runner</li><li>YAML</li><li>Bash</li>
+        <li>Make</li><li>clang-format</li><li>SSH</li><li>Telegram Bot API</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/gitlab-ci-basics" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./docker-nginx-fastcgi.html">← Контейнеризация</a>
+      <a href="./swarm-microservices.html">Docker Swarm →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

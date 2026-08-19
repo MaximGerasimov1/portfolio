@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мониторинг, централизованные логи и алертинг — Максим Герасимов</title>
+<meta name="description" content="Prometheus, Loki, Promtail, Grafana и Alertmanager для приложения в Docker Swarm: метрики через Micrometer, обнаружение целей через DNS, три правила алертинга.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/observability-stack.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Мониторинг, централизованные логи и алертинг">
+<meta property="og:description" content="Prometheus, Loki, Promtail, Grafana и Alertmanager для приложения в Docker Swarm: метрики через Micrometer, обнаружение целей через DNS, три правила алертинга.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/observability-stack.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">observability</span></div>
+      <h1 class="case__title">Мониторинг, централизованные логи и алертинг</h1>
+      <p class="case__sub">К приложению в Docker Swarm добавляются метрики,
+        логи, дашборд и уведомления — чтобы причина сбоя находилась
+        без обхода узлов по SSH.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Приложение работало в кластере из трёх узлов, но состояние сервисов
+          приходилось выяснять вручную — заходить на узлы и читать
+          <code>docker service logs</code>. Нужно было собрать метрики приложения
+          и инфраструктуры в одном месте, централизовать логи всех контейнеров
+          и узнавать об исчерпании ресурсов до того, как сервис перестанет отвечать.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Архитектура</h2>
+      <div>
+        <figure class="figure">
+          <svg viewBox="0 0 760 330" role="img" aria-label="Схема: сервисы приложения и экспортёры отдают метрики в Prometheus, Promtail собирает логи в Loki, Grafana читает оба источника, Prometheus передаёт срабатывания правил в Alertmanager, тот отправляет уведомления в Telegram и на почту" style="width:100%;height:auto;">
+            <defs>
+              <marker id="a9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="#6C7794"/>
+              </marker>
+              <marker id="a9r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="#2E3A5C"/>
+              </marker>
+            </defs>
+
+            <rect x="4" y="22" width="196" height="140" rx="8" fill="#F5F6F8" stroke="#E3E5E9"/>
+            <text x="102" y="16" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#9AA0A8">источники метрик</text>
+            <rect x="16" y="34" width="172" height="34" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="102" y="49" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1A1D23">7 сервисов приложения</text>
+            <text x="102" y="63" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">/actuator/prometheus</text>
+            <rect x="16" y="74" width="172" height="26" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="102" y="91" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">node_exporter · global</text>
+            <rect x="16" y="104" width="172" height="26" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="102" y="121" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">cAdvisor · global</text>
+            <rect x="16" y="134" width="172" height="22" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="102" y="149" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">blackbox_exporter</text>
+
+            <rect x="4" y="204" width="196" height="60" rx="8" fill="#F5F6F8" stroke="#E3E5E9"/>
+            <text x="102" y="198" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#9AA0A8">источник логов</text>
+            <rect x="16" y="216" width="172" height="36" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="102" y="232" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">Promtail · global</text>
+            <text x="102" y="246" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">логи контейнеров узла</text>
+
+            <line x1="204" y1="92" x2="286" y2="92" stroke="#6C7794" stroke-width="1.5" marker-end="url(#a9)"/>
+            <text x="245" y="84" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#9AA0A8">scrape</text>
+            <line x1="204" y1="234" x2="286" y2="234" stroke="#6C7794" stroke-width="1.5" marker-end="url(#a9)"/>
+            <text x="245" y="226" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#9AA0A8">push</text>
+
+            <rect x="292" y="66" width="150" height="52" rx="6" fill="#FFF" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="367" y="88" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#1A1D23">Prometheus</text>
+            <text x="367" y="105" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">метрики + правила</text>
+
+            <rect x="292" y="208" width="150" height="52" rx="6" fill="#FFF" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="367" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#1A1D23">Loki</text>
+            <text x="367" y="247" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">хранение логов</text>
+
+            <line x1="446" y1="98" x2="540" y2="146" stroke="#6C7794" stroke-width="1.5" marker-end="url(#a9)"/>
+            <line x1="446" y1="228" x2="540" y2="180" stroke="#6C7794" stroke-width="1.5" marker-end="url(#a9)"/>
+
+            <rect x="546" y="136" width="150" height="56" rx="6" fill="#FFF" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="621" y="159" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13.5" font-weight="600" fill="#1A1D23">Grafana</text>
+            <text x="621" y="177" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">PromQL + LogQL</text>
+
+            <line x1="367" y1="122" x2="367" y2="204" stroke="#E3E5E9" stroke-width="1"/>
+            <line x1="442" y1="80" x2="546" y2="46" stroke="#2E3A5C" stroke-width="1.5" marker-end="url(#a9r)"/>
+            <text x="500" y="52" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#6C7794">alert</text>
+
+            <rect x="546" y="18" width="150" height="42" rx="6" fill="#F5F6F8" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="621" y="44" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1A1D23">Alertmanager</text>
+
+            <line x1="621" y1="64" x2="621" y2="100" stroke="#6C7794" stroke-width="1.5" marker-end="url(#a9)"/>
+            <rect x="546" y="100" width="70" height="26" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="581" y="117" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">Telegram</text>
+            <rect x="626" y="100" width="70" height="26" rx="5" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="661" y="117" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">Email</text>
+
+            <text x="380" y="300" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#9AA0A8">Docker Swarm · три узла · overlay-сеть · цели node_exporter и cAdvisor находятся через внутренний DNS</text>
+          </svg>
+          <figcaption>Метрики и логи сходятся в одну точку; правила Prometheus дают сигнал
+            раньше, чем сервис перестанет отвечать.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Метрики приложения.</strong> Подключил Spring Boot Actuator
+            и <code>micrometer-registry-prometheus</code> к четырём сервисам и описал
+            прикладные счётчики через <code>MeterRegistry</code>: отправленные
+            и обработанные сообщения RabbitMQ, число бронирований, запросы
+            на gateway, запросы на авторизацию.</li>
+          <li><strong>Сбор метрик.</strong> Prometheus снимает четыре job'а
+            приложения через <code>/actuator/prometheus</code>, плюс инфраструктурные
+            экспортёры: node_exporter (узлы), cAdvisor (контейнеры),
+            blackbox_exporter (доступность эндпоинтов).</li>
+          <li><strong>Обнаружение целей через DNS.</strong> Экспортёры развёрнуты
+            в режиме <code>global</code> — по экземпляру на узел, поэтому их цели
+            находятся через внутренний DNS Swarm (<code>dns_sd_configs</code>),
+            а не задаются статическим списком: при добавлении узла конфигурацию
+            Prometheus править не нужно.</li>
+          <li><strong>Централизованные логи.</strong> Promtail в режиме
+            <code>global</code> читает <code>/var/lib/docker/containers</code>
+            на каждом узле и отправляет логи в Loki; Loki и Prometheus подключены
+            в Grafana как источники данных через provisioning.</li>
+          <li><strong>Дашборд.</strong> Собрал в Grafana панель на PromQL
+            (метрики сервисов, CPU и память узлов и контейнеров)
+            и LogQL (логи в разрезе сервисов).</li>
+          <li><strong>Алертинг.</strong> Три правила: доступная память узла
+            меньше 100 МБ, память контейнера больше 1 ГБ, загрузка CPU сервисом
+            выше 10%. Alertmanager отправляет уведомления в Telegram и на почту
+            по собственному шаблону сообщения.</li>
+          <li><strong>Развёртывание стенда.</strong> <code>Vagrantfile</code>
+            поднимает три ВМ, скрипты ставят Docker, инициализируют Swarm
+            и разворачивают три стека. Скрипт деплоя ждёт готовности всех трёх узлов,
+            прежде чем выполнять <code>stack deploy</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Фрагменты конфигурации</h2>
+      <div class="code-pair">
+        <div>
+          <p class="code-label"># prometheus.yml — обнаружение целей через DNS Swarm</p>
+<pre class="code"><code>- job_name: 'node_exporter'
+  dns_sd_configs:
+    - names:
+        - 'tasks.monitoring_node-exporter'
+      type: 'A'
+      port: 9100</code></pre>
+        </div>
+        <div>
+          <p class="code-label"># alert.rules.yml — правило по памяти узла</p>
+<pre class="code"><code>- alert: Доступная память на узле
+  expr: node_memory_MemAvailable_bytes
+        / 1024 / 1024 &lt; 100
+  for: 30s
+  annotations:
+    summary: "Доступно {{ $value }} Мб RAM"</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Метрики приложения, контейнеров и узлов и логи всех сервисов собраны
+            в одном интерфейсе — причина сбоя локализуется без обхода узлов по SSH.</li>
+          <li>Исчерпание памяти или рост CPU видно по алерту до того, как сервис
+            перестанет отвечать.</li>
+          <li>Список целей мониторинга не нужно править руками при изменении
+            состава кластера.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Docker Swarm</li><li>Prometheus</li><li>Alertmanager</li><li>Grafana</li>
+        <li>Loki</li><li>Promtail</li><li>node_exporter</li><li>cAdvisor</li>
+        <li>blackbox_exporter</li><li>Portainer</li><li>Spring Boot Actuator</li>
+        <li>Micrometer</li><li>Vagrant</li><li>PromQL / LogQL</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/observability-stack" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./ansible-consul-provisioning.html">← Ansible и Consul</a>
+      <a href="./k8s-manifests.html">Переезд в Kubernetes →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

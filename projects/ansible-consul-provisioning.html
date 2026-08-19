@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure as Code: Ansible и service discovery на Consul — Максим Герасимов</title>
+<meta name="description" content="Развёртывание приложения на парк виртуальных машин через роли Ansible и шаблоны Jinja2; Consul и sidecar-прокси Envoy для обнаружения сервисов.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/ansible-consul-provisioning.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Infrastructure as Code: Ansible и service discovery на Consul">
+<meta property="og:description" content="Развёртывание приложения на парк виртуальных машин через роли Ansible и шаблоны Jinja2; Consul и sidecar-прокси Envoy для обнаружения сервисов.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/ansible-consul-provisioning.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">provisioning</span></div>
+      <h1 class="case__title">Infrastructure as Code: Ansible и service discovery на Consul</h1>
+      <p class="case__sub">То же приложение разворачивается на парк виртуальных машин
+        без ручной настройки узлов.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Настройка узлов вручную не масштабируется и расходится между машинами:
+          через неделю уже неясно, что именно и в каком порядке доставили на каждый
+          сервер. Нужно было описать конфигурацию узлов кодом и сделать так,
+          чтобы сервисы находили друг друга сами, без прописанных адресов.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <p><strong>Часть 1 — конфигурирование узлов через Ansible.</strong></p>
+        <ul>
+          <li>Поднял стенд из трёх ВМ (<code>manager</code>, <code>node01</code>,
+            <code>node02</code>) через Vagrant, сознательно без установки Docker
+            при создании машин — всё ставит Ansible.</li>
+          <li>Подготовил <code>manager</code> как управляющую станцию: доступ
+            по ключам, инвентарь.</li>
+          <li>Написал плейбук и три роли: <strong>application</strong> — установка
+            Docker и Compose, доставка compose-файла и развёртывание приложения
+            на <code>node01</code>; <strong>apache</strong> — веб-сервер на
+            <code>node02</code>; <strong>postgres</strong> — установка PostgreSQL,
+            создание базы и наполнение таблицы, с обработчиками для перезапуска службы.</li>
+          <li>Конфигурационные файлы и systemd-юниты формируются из шаблонов Jinja2,
+            а не копируются готовыми.</li>
+        </ul>
+        <p style="margin-top:16px;"><strong>Часть 2 — service discovery.</strong></p>
+        <ul>
+          <li>Собрал второй стенд из четырёх ВМ (<code>consul_server</code>,
+            <code>api</code>, <code>manager</code>, <code>db</code>).</li>
+          <li>Написал конфигурации агентов Consul — сервера и клиента — указав
+            в <code>advertise_addr</code> интерфейс внутренней сети Vagrant.
+            Без этого агент анонсирует NAT-адрес Vagrant, и другие узлы
+            до него не достучатся.</li>
+          <li>Четыре роли: установка Consul-сервера, установка Consul-клиента
+            вместе с sidecar-прокси Envoy, установка и инициализация PostgreSQL,
+            развёртывание hotel-service из собранного jar.</li>
+          <li>Consul и <code>consul-envoy</code> описаны как systemd-юниты
+            из шаблонов — запускаются и восстанавливаются штатными средствами системы.</li>
+        </ul>
+        <p style="margin-top:16px;"><strong>Отладка.</strong> При интеграции сервиса
+          с PostgreSQL нашёл и исправил ошибку типизации Long/Integer в контроллере
+          Spring — она проявлялась только на реальной базе, а не на тестовых данных.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Парк машин и приложение разворачиваются одной командой: конфигурация
+            узлов описана в ролях и не зависит от того, кто и в каком порядке
+            её применял.</li>
+          <li>Сервисы регистрируются в Consul и находят друг друга по имени —
+            адреса не прописываются в конфигурации вручную.</li>
+          <li>Health checks Consul показывают недоступный экземпляр до того,
+            как в него уйдёт трафик.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Ansible (роли, плейбуки, Jinja2, handlers)</li><li>Vagrant</li>
+        <li>HashiCorp Consul</li><li>Envoy (sidecar)</li><li>systemd</li>
+        <li>PostgreSQL</li><li>Apache</li><li>Docker Compose</li><li>Spring Boot</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/ansible-consul-provisioning" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./swarm-microservices.html">← Docker Swarm</a>
+      <a href="./observability-stack.html">Мониторинг и алертинг →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

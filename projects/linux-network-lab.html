@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сетевой стенд: маршрутизация, файрвол, NAT — Максим Герасимов</title>
+<meta name="description" content="Стенд из пяти машин с двумя маршрутизаторами: подсети, статическая и динамическая маршрутизация, iptables, NAT, SSH-туннели, диагностика потерь трафика.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/linux-network-lab.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Сетевой стенд: маршрутизация, файрвол, NAT">
+<meta property="og:description" content="Стенд из пяти машин с двумя маршрутизаторами: подсети, статическая и динамическая маршрутизация, iptables, NAT, SSH-туннели, диагностика потерь трафика.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/linux-network-lab.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">network</span></div>
+      <h1 class="case__title">Сетевой стенд: маршрутизация, файрвол, NAT</h1>
+      <p class="case__sub">Переход от одного сервера к сети из нескольких машин
+        и двух маршрутизаторов с изолированными подсетями.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Спроектировать и собрать сетевой стенд, обеспечить связность между
+          изолированными подсетями и — главное — научиться определять,
+          на каком именно узле теряется трафик, вместо перебора настроек наугад.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Расчёт адресации.</strong> Разбиение на подсети и расчёт масок
+            через <code>ipcalc</code>; схема стенда спроектирована до его сборки.</li>
+          <li><strong>Статическая маршрутизация.</strong> Настроил адреса узлов, включил
+            IP-форвардинг на маршрутизаторах, задал маршрут по умолчанию и статические
+            маршруты между подсетями — сначала вручную, затем с сохранением
+            в конфигурации, чтобы они переживали перезагрузку.</li>
+          <li><strong>Динамическая адресация.</strong> Поднял <code>isc-dhcp-server</code>
+            и проверил получение адресов клиентами после перезагрузки.</li>
+          <li><strong>NAT.</strong> Настроил трансляцию адресов, чтобы машины внутренней
+            сети получили доступ во внешнюю.</li>
+          <li><strong>Файрвол.</strong> Правила <code>iptables</code> для ограничения
+            трафика между сегментами сети.</li>
+          <li><strong>Диагностика.</strong> <code>ping</code> и <code>traceroute</code>
+            для построения пути пакета, разбор поведения ICMP при недоступном маршруте,
+            замер пропускной способности каналов через <code>iperf3</code>.</li>
+          <li><strong>SSH-туннели.</strong> Local TCP forwarding для доступа
+            к веб-серверу на машине, недоступной напрямую.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Связность между всеми подсетями подтверждена тестами, а не предположениями.</li>
+          <li>При отказе связности видно, на каком узле теряется пакет: таблица
+            маршрутизации, правила файрвола и вывод <code>traceroute</code> дают ответ
+            за минуты.</li>
+          <li>Появился навык, который дальше применялся в каждом проекте с несколькими
+            виртуальными машинами — от Docker Swarm до кластера k3s.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Linux</li><li>TCP/IP</li><li>ipcalc</li><li>статическая маршрутизация</li>
+        <li>isc-dhcp-server</li><li>iptables</li><li>NAT</li><li>iperf3</li>
+        <li>traceroute</li><li>tcpdump</li><li>SSH-туннели</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/linux-network-lab" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./linux-server-baseline.html">← Администрирование Linux</a>
+      <a href="./bash-system-report.html">Bash-инструментарий →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

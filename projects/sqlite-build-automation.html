@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сборка нативной библиотеки: CMake, Docker, CI и провижининг — Максим Герасимов</title>
+<meta name="description" content="Тестовое задание: кроссплатформенная сборка динамической библиотеки через CMake, multi-stage Docker-образ, провижининг стенда Vagrant и Ansible, конвейер GitLab CI с публикацией образа.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/sqlite-build-automation.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Сборка нативной библиотеки: CMake, Docker, CI и провижининг">
+<meta property="og:description" content="Тестовое задание: кроссплатформенная сборка динамической библиотеки через CMake, multi-stage Docker-образ, провижининг стенда Vagrant и Ansible, конвейер GitLab CI с публикацией образа.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/sqlite-build-automation.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">build · ci/cd</span></div>
+      <h1 class="case__title">Сборка нативной библиотеки: CMake, Docker, CI и провижининг</h1>
+      <p class="case__sub">Тестовое задание: один исходный код собирается вручную под Linux
+        и Windows, в контейнере, на подготовленной Ansible виртуальной машине и в CI-конвейере.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Собрать SQLite в виде динамической библиотеки — <code>.so</code> под Linux
+          и <code>.dll</code> под Windows — и довести процесс до состояния, когда
+          сборка не зависит от того, на какой машине она запускается: описать её
+          кодом, изолировать окружение и вынести в конвейер.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Решение</h2>
+      <div>
+        <figure class="figure">
+          <svg viewBox="0 0 760 240" role="img" aria-label="Схема: единый CMakeLists обслуживает сборку под Linux, Windows и в Docker; окружение готовится Vagrant и Ansible, конвейер GitLab CI собирает библиотеку и публикует образ в registry" style="width:100%;height:auto;">
+            <defs>
+              <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="#6C7794"/>
+              </marker>
+            </defs>
+
+            <rect x="6" y="92" width="150" height="52" rx="6" fill="#F1F2F5" stroke="#E3E5E9"/>
+            <text x="81" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12.5" fill="#1A1D23">Исходники SQLite</text>
+            <text x="81" y="131" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">amalgamation</text>
+
+            <line x1="160" y1="118" x2="212" y2="118" stroke="#6C7794" stroke-width="1.5" marker-end="url(#ab)"/>
+
+            <rect x="218" y="86" width="164" height="64" rx="6" fill="#FFF" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="300" y="110" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1A1D23">CMakeLists.txt</text>
+            <text x="300" y="127" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">единое описание</text>
+            <text x="300" y="141" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">сборки</text>
+
+            <line x1="386" y1="106" x2="454" y2="52"  stroke="#6C7794" stroke-width="1.5" marker-end="url(#ab)"/>
+            <line x1="386" y1="118" x2="454" y2="118" stroke="#6C7794" stroke-width="1.5" marker-end="url(#ab)"/>
+            <line x1="386" y1="130" x2="454" y2="184" stroke="#6C7794" stroke-width="1.5" marker-end="url(#ab)"/>
+
+            <rect x="460" y="26" width="140" height="48" rx="6" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="530" y="47" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11.5" fill="#33383F">Linux · GCC</text>
+            <text x="530" y="63" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">libsqlite3.so</text>
+
+            <rect x="460" y="94" width="140" height="48" rx="6" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="530" y="115" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11.5" fill="#33383F">Windows · MSVC</text>
+            <text x="530" y="131" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">sqlite3.dll + .lib</text>
+
+            <rect x="460" y="162" width="140" height="48" rx="6" fill="#EDEFF4" stroke="#C7CDDC"/>
+            <text x="530" y="183" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11.5" fill="#2E3A5C">Docker</text>
+            <text x="530" y="199" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#6C7178">multi-stage образ</text>
+
+            <line x1="604" y1="186" x2="654" y2="186" stroke="#6C7794" stroke-width="1.5" marker-end="url(#ab)"/>
+            <rect x="660" y="162" width="94" height="48" rx="6" fill="#FFF" stroke="#E3E5E9"/>
+            <text x="707" y="190" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">registry</text>
+
+            <rect x="6" y="18" width="150" height="46" rx="6" fill="#F5F6F8" stroke="#E3E5E9" stroke-dasharray="4 3"/>
+            <text x="81" y="38" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">Vagrant + Ansible</text>
+            <text x="81" y="53" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#6C7178">подготовка ВМ</text>
+            <line x1="160" y1="41" x2="212" y2="96" stroke="#9AA0A8" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#ab)"/>
+
+            <rect x="6" y="172" width="150" height="46" rx="6" fill="#F5F6F8" stroke="#E3E5E9" stroke-dasharray="4 3"/>
+            <text x="81" y="192" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#33383F">GitLab CI</text>
+            <text x="81" y="207" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="#6C7178">build → image → push</text>
+            <line x1="160" y1="195" x2="212" y2="140" stroke="#9AA0A8" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#ab)"/>
+          </svg>
+          <figcaption>Платформенные различия локализованы в двух условиях <code>CMakeLists.txt</code>;
+            всё остальное — способы запустить одну и ту же сборку.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделал</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Кроссплатформенная сборка.</strong> Один <code>CMakeLists.txt</code>
+            собирает разделяемую библиотеку и линкует с ней консольную утилиту.
+            Различия компиляторов вынесены в условия: под Windows экспорт символов
+            включается через <code>__declspec(dllexport)</code>, под Linux
+            подключаются <code>pthread</code>, <code>dl</code> и <code>m</code>.</li>
+          <li><strong>Изолированное окружение.</strong> Multi-stage <code>Dockerfile</code>:
+            первый слой ставит тулчейн и собирает проект, второй — чистый
+            <code>debian:stable-slim</code>, куда копируются только артефакты.
+            В финальном образе нет ни компилятора, ни исходников.</li>
+          <li><strong>Отладка сборки образа.</strong> <code>docker build</code> падал
+            на <code>mkdir: cannot create directory 'build'</code> — в контекст сборки
+            попадал локальный каталог <code>build/</code> от ручной сборки.
+            Добавил <code>.dockerignore</code>, и контекст перестал зависеть
+            от состояния рабочей машины.</li>
+          <li><strong>Провижининг стенда.</strong> <code>Vagrantfile</code> поднимает
+            ВМ на Debian и запускает Ansible-плейбук: тулчейн, Docker (репозиторий
+            и GPG-ключ по официальной инструкции, а не <code>curl | sh</code>),
+            загрузка исходников, сборка библиотеки, сборка образа и проверка
+            запуском контейнера — одной командой.</li>
+          <li><strong>CI-конвейер.</strong> Две стадии: <code>build_lib</code> собирает
+            библиотеку и отдаёт её вместе с логами конфигурации и компиляции
+            в артефакты; <code>build_image</code> собирает образ в <code>docker:dind</code>
+            и публикует его в registry. Учётные данные берутся из переменных CI.</li>
+          <li><strong>Управление зависимостями.</strong> Отдельный пример с Conan:
+            пакетный менеджер подтягивает <code>zlib</code>, генерирует
+            toolchain-файл для CMake, приложение линкуется без установки
+            зависимости в систему.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Одно описание сборки покрывает Linux, Windows и контейнер.</li>
+          <li>Финальный образ содержит только библиотеку и утилиту — компилятор
+            и исходники остаются в промежуточном слое.</li>
+          <li>Сборка не зависит от состояния рабочей машины: контекст Docker очищен,
+            окружение разворачивается плейбуком, исходники скачиваются
+            по фиксированной версии.</li>
+          <li>Конвейер собирает библиотеку, сохраняет логи компиляции как артефакты
+            и публикует образ в registry без ручных шагов.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>CMake</li><li>GCC</li><li>MSVC</li><li>Docker (multi-stage)</li>
+        <li>GitLab CI</li><li>Ansible</li><li>Vagrant</li><li>Conan</li>
+        <li>C</li><li>Bash</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+        <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/sqlite-build-automation" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./docker-nginx-proxy.html">← Приложение за обратным прокси</a>
+      <a href="./index.html">Все проекты →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

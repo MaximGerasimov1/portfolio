@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://maximgerasimov1.github.io/portfolio/</loc><priority>1.0</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/</loc><priority>0.9</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/skills.html</loc><priority>0.7</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/about_me.html</loc><priority>0.7</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/contacts.html</loc><priority>0.6</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/linux-server-baseline.html</loc><priority>0.6</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/linux-network-lab.html</loc><priority>0.7</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/bash-system-report.html</loc><priority>0.6</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/linux-logs-and-metrics.html</loc><priority>0.6</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/docker-nginx-fastcgi.html</loc><priority>0.7</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/gitlab-ci-basics.html</loc><priority>0.7</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/swarm-microservices.html</loc><priority>0.8</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/ansible-consul-provisioning.html</loc><priority>0.8</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/observability-stack.html</loc><priority>0.9</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/k8s-manifests.html</loc><priority>0.8</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/k8s-k3s-cluster.html</loc><priority>0.8</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/k8s-helm-kustomize.html</loc><priority>0.8</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/k8s-cicd-pipeline.html</loc><priority>0.9</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/docker-nginx-proxy.html</loc><priority>0.8</priority></url>
+  <url><loc>https://maximgerasimov1.github.io/portfolio/projects/sqlite-build-automation.html</loc><priority>0.8</priority></url>
+</urlset>

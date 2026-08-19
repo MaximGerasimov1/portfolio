@@ -1,98 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My portfolio</title>
-    <link rel="stylesheet" href="./css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обо мне — Максим Герасимов, DevOps</title>
+<meta name="description" content="Максим Герасимов: студент 4 курса НИУ МГСУ, направление DevOps в Школе 21 с апреля 2025. Образование, достижения, как я работаю и что ищу.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/about_me.html">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Обо мне — Максим Герасимов, DevOps">
+<meta property="og:description" content="Студент 4 курса НИУ МГСУ, направление DevOps в Школе 21. 13 инженерных проектов за 16 месяцев параллельно с очной учёбой.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/about_me.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    <nav class="nav">
-        <div class="container">
-            <div class="nav-row">
-                <a href="./index.html" class="logo"><strong>My</strong> portfolio</a>
-                <ul class="nav-list">
-                    <li class="nav-list__item"><a href="./index.html" class="nav-list__link">Projects</a></li>
-                    <li class="nav-list__item"><a href="./skills.html" class="nav-list__link">Skills</a></li>
-                    <li class="nav-list__item"><a href="./contacts.html" class="nav-list__link">Contacts</a></li>
-                    <li class="nav-list__item"><a href="./about_me.html" class="nav-list__link nav-list__link--active">About me</a></li>
-                </ul>
-            </div>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="./index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="./index.html">Главная</a></li>
+      <li><a href="./projects/index.html">Проекты</a></li>
+      <li><a href="./skills.html">Стек</a></li>
+      <li><a href="./about_me.html" aria-current="page">Обо мне</a></li>
+      <li><a href="./contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container">
+
+    <header class="page-head">
+      <h1 class="page-title">Обо мне</h1>
+      <p class="page-lede">
+        Ищу позицию Junior DevOps / Infrastructure Engineer. Москва,
+        гибрид, удалённый формат или офис.
+      </p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Как я сюда<br>пришёл</h2>
+      <div class="prose">
+        <p>Начинал с разработки: C и C++ в университете, затем курс full-stack
+          на itProger и учебные проекты на PHP. Довольно быстро стало понятно,
+          что мне интереснее не сама разработка, а то, как приложение живёт
+          после неё: где оно запускается, что делать, когда оно падает,
+          и почему на соседней машине оно работает иначе.</p>
+        <p>В феврале 2025 года прошёл отборочный интенсив Школы 21 и занял
+          <strong>первое место в рейтинге среди 250 участников</strong>.
+          С апреля 2025 года иду по направлению DevOps — параллельно
+          с очной учёбой в НИУ МГСУ.</p>
+        <p>За 16 месяцев — 13 инженерных проектов. Последние семь выполнены
+          на одной системе: микросервисное приложение из семи сервисов,
+          которое я последовательно перевозил из Docker Swarm в Kubernetes,
+          обвешивал мониторингом, шаблонизировал и в итоге научился выкатывать
+          пайплайном. Это дало сквозное понимание системы: где что ломается,
+          как одно решение тянет за собой следующее и во что обходится
+          неаккуратная конфигурация на предыдущем слое.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что я умею<br>делать руками</h2>
+      <div class="prose">
+        <ul>
+          <li>Поднять стенд из нескольких виртуальных машин и описать его кодом,
+            а не собрать вручную.</li>
+          <li>Разложить приложение по контейнерам и оркестрировать его —
+            в Docker Swarm или Kubernetes.</li>
+          <li>Настроить сбор метрик и логов так, чтобы причина сбоя находилась
+            по дашборду, а не обходом узлов по SSH.</li>
+          <li>Собрать пайплайн, который отсекает нерабочий код до выката.</li>
+          <li>Разобраться, почему не работает: прочитать логи, проверить
+            маршрут пакета, права в RBAC, DNS внутри пода — и найти причину,
+            а не подобрать обход.</li>
+        </ul>
+        <p style="margin-top:16px;">
+          <a href="./projects/index.html">Все проекты с описанием →</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Образование</h2>
+      <ul class="entries">
+        <li>
+          <span class="org">НИУ МГСУ</span> — Национальный исследовательский
+          Московский государственный строительный университет,
+          «Информационные системы и технологии» (инженер), бюджет
+          <span class="when">— 2023–2027</span>
+        </li>
+        <li>
+          <span class="org">Школа 21</span> (образовательный проект Сбербанка),
+          направление DevOps, с апреля 2025. 64 проведённых code review
+        </li>
+        <li>
+          <span class="org">itProger</span> — «Full-stack разработчик», сертификат
+          <span class="when">— 2024</span>
+        </li>
+        <li style="color:var(--muted);">
+          Школу окончил с золотой медалью, ЕГЭ по информатике — 90 баллов.
+        </li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Кроме работы</h2>
+      <div class="prose">
+        <p>11 лет профессионального плавания, кандидат в мастера спорта.
+          Оттуда привычка доводить задачу до конца и спокойно относиться
+          к разбору собственных ошибок — в Школе 21 это пригодилось:
+          64 проведённых code review — это в том числе умение объяснить,
+          что не так, и принять то же самое в свой адрес.</p>
+        <p>Английский — B1, читаю техническую документацию в оригинале.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Сертификат</h2>
+      <figure class="figure">
+        <img src="./img/ItPtoger_diplom.png" width="1168" height="828" loading="lazy"
+             alt="Сертификат itProger о прохождении курса Full-stack разработчик, 2024 год">
+        <figcaption>itProger, «Full-stack разработчик», 2024</figcaption>
+      </figure>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Дальше</h2>
+      <div>
+        <div class="actions" style="margin-top:0;">
+          <a class="btn" href="./projects/index.html">Проекты</a>
+          <a class="btn btn--ghost" href="./resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a>
+          <a class="btn btn--ghost" href="./contacts.html">Контакты</a>
         </div>
-    </nav>
+      </div>
+    </section>
 
-    <main class="section">
-        <div class="container">
-            <h1 class="title-1">About Me</h1>
+  </div>
+</main>
 
-            <div class="skills-wrapper">
-                <section class="skills-category">
-                    <h2 class="title-2">Education & Engineering</h2>
-                    <div class="skills-list">
-                        <p>
-                            Базовое ИТ-образование получаю в <strong>НИУ МГСУ</strong> (Информационные системы и технологии, бюджет, 2023/2027 бакалавр). 
-                            Школу окончил с золотой медалью, подтвердив знания на <strong>ЕГЭ по информатике (90 баллов)</strong>.
-                        </p>
-                        <p>
-                            В феврале 2025 года прошел отбор и поступил на основное обучение в <strong>«Школу 21» от Сбера</strong>. 
-                            Там я выполняю проекты по траектории <strong>DevOps</strong>, развивая свои компетенции в этом направлении.
-                        </p>
-                        <div class="skill-tag">Docker & Compose</div>
-                        <div class="skill-tag">CI/CD (GitLab)</div>
-                        <div class="skill-tag">Ansible & Consul</div>
-                        <div class="skill-tag">Linux (Bash)</div>
-                    </div>
-                </section>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./projects/index.html">Проекты</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="mailto:m.s.gerasimov@mail.ru">Почта</a></li>
+      <li><a href="./resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
 
-                <section class="skills-category">
-                    <h2 class="title-2">Development Experience</h2>
-                    <div class="skills-list">
-                        <p>
-                            С 2024 года глубоко погрузился в веб-разработку: от верстки до сложных систем на <strong>PHP (OOP, MVC)</strong>. 
-                            Прошел обучение на Full-stack разработчика на платформе ItProger (сертификат ниже).
-                        </p>
-                        <div class="skill-tag">PHP (OOP/MVC)</div>
-                        <div class="skill-tag">C/C++</div>
-                        <div class="skill-tag">SQL</div>
-                    </div>
-                </section>
-
-                <section class="skills-category">
-                    <h2 class="title-2">Soft Skills & Discipline</h2>
-                    <div class="skills-list">
-                        <p>
-                            Моя главная черта — <strong>дисциплина</strong>. 11 лет я отдал профессиональному плаванию и стал <strong>КМС</strong>. 
-                            Спорт научил меня не бросать задачу, пока она не будет решена идеально.
-                        </p>
-                        <p>
-                            Свободно чувствую себя в коммуникации, умею адекватно воспринимать критику и работать на результат в сжатые сроки.
-                        </p>
-                        <div class="skill-tag" style="background: var(--accent); color: white;">Target: Junior DevOps / Intern</div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="diploma-wrapper" style="margin-top: 60px; border-top: 1px solid var(--dark-border); padding-top: 40px; text-align: center;">
-                <h2 class="title-2">Certification</h2>
-                <img src="./img/ItPtoger_diplom.png" alt="ItProger Certificate" style="max-width: 600px; width: 100%; border-radius: 10px; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
-            </div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__wrapper">
-                <ul class="social">
-                    <li class="social__item"><a href="https://vk.com/gmaxim2" target="_blank"><img src="./img/icons/vk.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://t.me/gisellet3" target="_blank"><img src="./img/icons/tg.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://github.com/dashboard" target="_blank"><img src="./img/icons/gitHub.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://hh.ru/resume/8d4c6741ff0eeb13270039ed1f506d357a5465?from=share_ios" target="_blank"><img src="./img/icons/hhru.png" alt="link"></a></li>
-                </ul>
-                <div class="copyright">
-                    <p>©2025 frontend-dev.com</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 </body>
 </html>

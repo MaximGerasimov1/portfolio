@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контейнеризация: Dockerfile, Compose и проверка образов — Максим Герасимов</title>
+<meta name="description" content="Собственный образ Nginx с FastCGI-сервером на C, разделение на два контейнера, запуск не от root, проверка образа линтером Dockle, health checks.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/docker-nginx-fastcgi.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Контейнеризация: Dockerfile, Compose и проверка образов">
+<meta property="og:description" content="Собственный образ Nginx с FastCGI-сервером на C, разделение на два контейнера, запуск не от root, проверка образа линтером Dockle, health checks.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/docker-nginx-fastcgi.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">containers</span></div>
+      <h1 class="case__title">Контейнеризация: Dockerfile, Compose и проверка образов</h1>
+      <p class="case__sub">Переход от настройки машин к упаковке приложения
+        вместе с его окружением.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Одно и то же приложение на разных машинах вело себя по-разному из-за
+          различий в установленных пакетах и конфигурации. Нужно было упаковать
+          веб-сервер вместе с окружением так, чтобы он запускался одинаково
+          где угодно одной командой.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Собственный образ.</strong> Написал Dockerfile для Nginx
+            с самописным FastCGI-сервером на C: сборка приложения, настройка
+            проксирования, проброс портов, работа с томами.</li>
+          <li><strong>Разделение на контейнеры.</strong> В <code>docker-compose.yml</code>
+            описал двухконтейнерную схему: один контейнер выполняет прикладную логику,
+            второй (Nginx) проксирует к нему трафик; взаимодействие — по внутренней
+            сети Compose, а не через хост.</li>
+          <li><strong>Ужесточение образа.</strong> Переключил запуск процесса
+            на пользователя без прав root, минимизировал базовый образ и прогнал
+            результат через <strong>Dockle</strong> — линтер, который проверяет образ
+            на типовые проблемы: процессы от root, отсутствие <code>USER</code>,
+            лишние права, следы секретов в слоях.</li>
+          <li><strong>Health checks.</strong> Настроил проверки работоспособности,
+            чтобы состояние контейнера отражало состояние приложения внутри,
+            а не только факт запуска процесса.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Приложение стало переносимым: <code>docker compose up</code> поднимает
+            его в том же виде на любой машине с Docker, без ручной установки
+            зависимостей.</li>
+          <li>Контейнер работает не от root, замечания Dockle к образу устранены.</li>
+          <li>Отсюда начинается контейнерная линия, которая в следующих проектах
+            переходит в оркестрацию.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Docker</li><li>Dockerfile</li><li>Docker Compose</li><li>Nginx</li>
+        <li>FastCGI</li><li>C</li><li>Dockle</li><li>health checks</li><li>Docker Hub</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/docker-nginx-fastcgi" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./linux-logs-and-metrics.html">← Логи и метрики</a>
+      <a href="./gitlab-ci-basics.html">Первый CI/CD →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

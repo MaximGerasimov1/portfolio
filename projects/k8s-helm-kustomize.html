@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шаблонизация развёртывания: Kustomize и Helm — Максим Герасимов</title>
+<meta name="description" content="Одна конфигурация Kubernetes двумя способами: база и оверлей в Kustomize, Helm-чарт с генерацией сервисов циклом по values.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/k8s-helm-kustomize.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Шаблонизация развёртывания: Kustomize и Helm">
+<meta property="og:description" content="Одна конфигурация Kubernetes двумя способами: база и оверлей в Kustomize, Helm-чарт с генерацией сервисов циклом по values.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/k8s-helm-kustomize.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">packaging</span></div>
+      <h1 class="case__title">Шаблонизация развёртывания: Kustomize и Helm</h1>
+      <p class="case__sub">Одна и та же конфигурация собирается двумя способами,
+        чтобы новое окружение не означало копию всех манифестов.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>К этому моменту приложение описывали простые манифесты: девять деплойментов,
+          сервисы, ConfigMap, Secret, PV/PVC, Ingress и сертификат. Каждое новое
+          окружение означало бы копию всего набора файлов с правкой нескольких
+          значений — дублирование, которое быстро расходится. Нужно было вынести
+          общее в одно место, а различия оставить точечными.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <p><strong>Kustomize: база и оверлей.</strong></p>
+        <ul>
+          <li>Разложил конфигурацию на <code>base</code> (неймспейс, деплойменты,
+            сервисы, PV/PVC, Ingress, Issuer, Certificate) и оверлей
+            <code>production</code>.</li>
+          <li>ConfigMap и Secret оверлей генерирует сам:
+            <code>configMapGenerator</code> из <code>configmap.env</code>
+            и <code>init.sql</code>, <code>secretGenerator</code> —
+            из <code>secrets.env</code> и файлов ключей.</li>
+          <li>Включил <code>disableNameSuffixHash: true</code>: по умолчанию Kustomize
+            добавляет к именам хэш содержимого, а деплойменты ссылаются на ConfigMap
+            и Secret по фиксированным именам — без этого флага поды не находят
+            конфигурацию.</li>
+          <li>Отличие production от базы описано одним <code>replicas-patch.yaml</code>,
+            поднимающим gateway-service до трёх реплик; всё остальное наследуется.</li>
+        </ul>
+        <p style="margin-top:16px;"><strong>Helm: тот же набор через шаблоны.</strong></p>
+        <ul>
+          <li>Деплойменты и сервисы семи приложений генерируются одним шаблоном
+            в цикле по <code>.Values.services</code> — образ, порт, число реплик
+            и ключ базы данных стали параметрами записи, а не семью почти
+            одинаковыми файлами.</li>
+          <li>Postgres, RabbitMQ, ConfigMap, Secret, PV/PVC, Ingress, Issuer
+            и Certificate описаны отдельными шаблонами; общие имена и метки
+            вынесены в <code>_helpers.tpl</code>, инициализирующий SQL подставляется
+            через <code>.Files.Get</code>.</li>
+          <li>Чарт упакован через <code>helm package</code>, установлен через
+            <code>helm install</code>, изменение в <code>values.yaml</code> выкачено
+            через <code>helm upgrade</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Фрагмент</h2>
+      <div class="code-pair">
+        <div>
+          <p class="code-label"># overlays/production/kustomization.yaml</p>
+<pre class="code"><code>resources:
+  - ../../base
+namespace: basic-kuber
+configMapGenerator:
+  - name: environments
+    envs: [files/configmap.env]
+generatorOptions:
+  disableNameSuffixHash: true
+patches:
+  - path: replicas-patch.yaml</code></pre>
+        </div>
+        <div>
+          <p class="code-label"># helm — сервисы генерируются циклом по values</p>
+<pre class="code"><code>{{- range $name, $svc := .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}-svc
+spec:
+  replicas: {{ $svc.replicas }}
+  ...
+{{- end }}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Конфигурация не дублируется: новое окружение — dev, stage, test —
+            добавляется оверлеем поверх той же базы или своим файлом values,
+            без копирования девяти манифестов.</li>
+          <li>Добавление сервиса в Helm-варианте — это запись в
+            <code>values.yaml</code>, а не ещё одна пара манифестов
+            deployment + service.</li>
+          <li>Одно приложение описано двумя инструментами — видна разница подходов:
+            Kustomize накладывает патчи на готовый YAML, Helm генерирует YAML
+            из шаблонов и параметров.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Kubernetes</li><li>k3s</li><li>Kustomize</li><li>Helm</li>
+        <li>cert-manager</li><li>ingress-nginx</li><li>Vagrant</li><li>Bash</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/k8s-helm-kustomize" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./k8s-k3s-cluster.html">← Кластер k3s</a>
+      <a href="./k8s-cicd-pipeline.html">CI/CD в Kubernetes →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,121 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxim Gerasimov - Portfolio</title>
-    <link rel="stylesheet" href="./css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Максим Герасимов — Junior DevOps / Infrastructure Engineer</title>
+<meta name="description" content="Портфолио Junior DevOps / Infrastructure Engineer: Linux, сети, Docker, Kubernetes, Helm, Ansible, GitLab CI, Prometheus и Grafana. Инженерные проекты по инфраструктуре с разбором задач и решений.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Максим Герасимов — Junior DevOps / Infrastructure Engineer">
+<meta property="og:description" content="Linux и сети → инфраструктура → контейнеризация → Kubernetes → CI/CD → мониторинг и диагностика. Инженерные проекты с разбором задач и решений.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    <nav class="nav">
-        <div class="container">
-            <div class="nav-row">
-                <a href="./index.html" class="logo"><strong>Maxim</strong> Portfolio</a>
-                <ul class="nav-list">
-                    <li class="nav-list__item"><a href="./index.html" class="nav-list__link nav-list__link--active">Projects</a></li>
-                    <li class="nav-list__item"><a href="./skills.html" class="nav-list__link">Skills</a></li>
-                    <li class="nav-list__item"><a href="./contacts.html" class="nav-list__link">Contacts</a></li>
-                    <li class="nav-list__item"><a href="./about_me.html" class="nav-list__link">About me</a></li>
-                </ul>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="./index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="./index.html" aria-current="page">Главная</a></li>
+      <li><a href="./projects/index.html">Проекты</a></li>
+      <li><a href="./skills.html">Стек</a></li>
+      <li><a href="./about_me.html">Обо мне</a></li>
+      <li><a href="./contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1 class="hero__name">Максим Герасимов</h1>
+      <p class="hero__role">Junior DevOps / Infrastructure Engineer</p>
+      <p class="hero__meta">Москва · гибрид / удалённый формат / офис</p>
+      <p class="hero__lede">
+        Студент 4 курса НИУ МГСУ, с апреля 2025 года — направление DevOps
+        в Школе 21 (образовательный проект Сбербанка). Последовательно развивал
+        инфраструктуру одного микросервисного приложения — от развёртывания
+        на парке виртуальных машин до кластера Kubernetes с CI/CD-пайплайном
+        и настроенным алертингом. 13 проектов за 16 месяцев параллельно
+        с очной учёбой; <strong>1 место в рейтинге среди 250 участников</strong>
+        отборочного интенсива.
+      </p>
+      <div class="actions">
+        <a class="btn" href="./projects/index.html">Смотреть проекты</a>
+        <a class="btn btn--ghost" href="./resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a>
+        <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <img class="hero__portrait" src="./img/me4.jpg" width="168" height="210"
+         alt="Максим Герасимов, портретное фото">
+  </div>
+</header>
+
+<main id="main">
+  <div class="container">
+
+    <section class="section row">
+      <h2 class="key">Коротко</h2>
+      <ul class="facts">
+        <li><b>13</b><span>инженерных проектов за 16 месяцев</span></li>
+        <li><b>1 место</b><span>среди 250 участников отборочного интенсива</span></li>
+        <li><b>64</b><span>проведённых code review</span></li>
+        <li><b>7</b><span>проектов на одной сквозной системе</span></li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Инженерная<br>траектория</h2>
+      <div>
+        <ol class="track">
+          <li>
+            <div class="layer">os</div>
+            <div>
+              <h3><a href="./projects/linux-server-baseline.html">Базовое администрирование Linux</a></h3>
+              <p>Сеть, SSH, systemd, дисковая подсистема, журналы — база, на которой стоит всё остальное.</p>
             </div>
-        </div>
-    </nav>
-
-    <header class="header">
-        <div class="header__wrapper">
-            <h1 class="header__title">Maxim Gerasimov</h1>
-            <img src="./img/me4.jpg" alt="Photo" id="mine__photo">
-            <div class="header__text">
-                <p>Junior DevOps Engineer</p>
+          </li>
+          <li>
+            <div class="layer">network</div>
+            <div>
+              <h3><a href="./projects/linux-network-lab.html">Сетевой стенд: маршрутизация и файрвол</a></h3>
+              <p>Подсети, статические и динамические маршруты, iptables, NAT, SSH-туннели, диагностика потерь.</p>
             </div>
-            <a href="https://github.com/MaximGerasimov1" class="btn">GitHub Profile</a>
-        </div>
-    </header>
-
-    <main class="section">
-        <div class="container">
-            <section class="devops-featured">
-                <h2 class="title-1">DevOps Infrastructure</h2>
-                <div class="project-large">
-                    <img src="./img/projects/School21.jpg" alt="DevOps Projects" class="project-large__img">
-                    <div class="project-large__content">
-                        <h3 class="project-large__title">Infrastructure & Automation Suite</h3>
-                        <p class="project-large__text">
-                            Комплекс из 8 масштабных проектов по автоматизации и управлению инфраструктурой. 
-                            Включает в себя глубокое администрирование Linux, контейнеризацию (Docker), 
-                            настройку сетей, CI/CD пайплайны и мониторинг систем. 
-                            Реализован подход <strong>Infrastructure as Code</strong> с использованием Ansible и Service Mesh.
-                        </p>
-                        <div class="project-large__btns" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                            <a href="./projects/school21-devops.html" class="btn-outline">View Case Studies</a>
-                            <a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects" target="_blank" class="btn-outline">
-                                <img src="./img/icons/gitHub-black.svg" alt="" style="width: 20px; vertical-align: middle; margin-right: 8px;">
-                                View Source Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="development-archive" style="margin-top: 70px;">
-                <h2 class="title-1">Development Experience</h2>
-                <p style="text-align: center; margin-bottom: 30px; color: var(--text-color);">
-                    My software engineering background allows me to understand the Software Development Life Cycle from the inside.
-                </p>
-                
-                <ul class="projects">
-                    <li class="project">
-                        <h3 class="project__title">C Projects</h3>
-                        <p class="project__text">Algorithms, system programming, and low-level memory management.</p>
-                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
-                            <a href="https://github.com/MaximGerasimov1/C" class="btn-outline" target="_blank">View on GitHub</a>
-                        </div>
-                    </li>
-
-                    <li class="project">
-                        <h3 class="project__title">C++ Projects</h3>
-                        <p class="project__text">Object-oriented programming, STL, and complex data structures.</p>
-                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
-                            <a href="https://github.com/MaximGerasimov1/C-plus-plus" class="btn-outline" target="_blank">View on GitHub</a>
-                        </div>
-                    </li>
-
-                    <li class="project">
-                        <h3 class="project__title">Web Development</h3>
-                        <p class="project__text">Fullstack experience: pure PHP, MVC architecture, and responsive frontend.</p>
-                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
-                            <a href="https://github.com/MaximGerasimov1/my-web-projects" class="btn-outline" target="_blank">View on GitHub</a>
-                        </div>
-                    </li>
-                    
-                    <li class="project">
-                        <h3 class="project__title">Python & SQL</h3>
-                        <p class="project__text">Automation scripts and database design/optimization.</p>
-                        <div class="project__links" style="display: flex; justify-content: center; padding-bottom: 25px;">
-                            <a href="https://github.com/MaximGerasimov1/DevOps-Python-SQL" class="btn-outline" target="_blank">View on GitHub</a>
-                        </div>
-                    </li>
-                </ul>
-            </section>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__wrapper">
-                <ul class="social">
-                    <li class="social__item"><a href="https://vk.com/gmaxim2" target="_blank"><img src="./img/icons/vk.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://t.me/gisellet3" target="_blank"><img src="./img/icons/tg.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://github.com/dashboard" target="_blank"><img src="./img/icons/gitHub.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://hh.ru/resume/8d4c6741ff0eeb13270039ed1f506d357a5465" target="_blank"><img src="./img/icons/hhru.png" alt="link"></a></li>
-                </ul>
-                <div class="copyright">
-                    <p>©2026 maxim-devops.com</p>
-                </div>
+          </li>
+          <li>
+            <div class="layer">automation</div>
+            <div>
+              <h3><a href="./projects/bash-system-report.html">Bash-инструментарий сбора состояния</a></h3>
+              <p>Ручные команды диагностики заменены модульными скриптами с внешней конфигурацией.</p>
             </div>
+          </li>
+          <li>
+            <div class="layer">monitoring</div>
+            <div>
+              <h3><a href="./projects/linux-logs-and-metrics.html">Логи, обслуживание ФС и первые метрики</a></h3>
+              <p>Генерация нагрузки, выборочная очистка диска, разбор access-логов, Prometheus и Grafana.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">containers</div>
+            <div>
+              <h3><a href="./projects/docker-nginx-fastcgi.html">Контейнеризация: Dockerfile и Compose</a></h3>
+              <p>Свой образ, разделение на контейнеры, запуск не от root, проверка образа через Dockle.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">ci/cd</div>
+            <div>
+              <h3><a href="./projects/gitlab-ci-basics.html">Первый CI/CD-пайплайн на GitLab CI</a></h3>
+              <p>Build → стиль → тесты → деплой по SSH, с уведомлением о статусе в Telegram.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">orchestration</div>
+            <div>
+              <h3><a href="./projects/swarm-microservices.html">Оркестрация микросервисов в Docker Swarm</a></h3>
+              <p>Кластер из трёх узлов через Vagrant, оверлейная сеть, Nginx как единая точка входа.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">provisioning</div>
+            <div>
+              <h3><a href="./projects/ansible-consul-provisioning.html">Infrastructure as Code: Ansible и Consul</a></h3>
+              <p>Роли и шаблоны Jinja2 вместо ручной настройки узлов, service discovery через Consul.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">observability</div>
+            <div>
+              <h3><a href="./projects/observability-stack.html">Мониторинг, логи и алертинг</a></h3>
+              <p>Prometheus, Loki, Grafana, Alertmanager: метрики и логи в одном месте, уведомления до отказа.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">orchestration</div>
+            <div>
+              <h3><a href="./projects/k8s-manifests.html">Переезд в Kubernetes</a></h3>
+              <p>Собственные манифесты, ConfigMap и Secret, замер простоя при Recreate и RollingUpdate.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">orchestration</div>
+            <div>
+              <h3><a href="./projects/k8s-k3s-cluster.html">Кластер k3s: Ingress, TLS, хранилище</a></h3>
+              <p>Три узла, ingress-nginx вместо Traefik, cert-manager, PV/PVC для базы данных.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">packaging</div>
+            <div>
+              <h3><a href="./projects/k8s-helm-kustomize.html">Шаблонизация: Kustomize и Helm</a></h3>
+              <p>Одна конфигурация двумя способами; окружение добавляется оверлеем или файлом values.</p>
+            </div>
+          </li>
+          <li>
+            <div class="layer">ci/cd</div>
+            <div>
+              <h3><a href="./projects/k8s-cicd-pipeline.html">CI/CD-пайплайн в Kubernetes</a></h3>
+              <p>GitLab Runner внутри кластера, RBAC, build → тесты → выкат через <code>helm upgrade</code> по тегу.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="actions">
+          <a class="btn btn--ghost" href="./projects/index.html">Все проекты с описанием →</a>
         </div>
-    </footer>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Технический<br>стек</h2>
+      <div class="stack">
+        <p><span class="cat">Оркестрация и контейнеризация</span> <span class="dash">—</span> Docker, Docker Compose, Docker Swarm, Kubernetes, Helm, Kustomize</p>
+        <p><span class="cat">CI/CD</span> <span class="dash">—</span> GitLab CI, GitLab Runner, Git</p>
+        <p><span class="cat">IaC и конфигурация</span> <span class="dash">—</span> Ansible, Vagrant</p>
+        <p><span class="cat">Мониторинг</span> <span class="dash">—</span> Prometheus, Grafana, Loki, Alertmanager</p>
+        <p><span class="cat">ОС и сети</span> <span class="dash">—</span> Linux (Ubuntu, Debian), systemd, Nginx, SSH, сети (подсети, маршрутизация, iptables, DNS), виртуализация</p>
+        <p><span class="cat">Языки и данные</span> <span class="dash">—</span> Bash, Python, SQL, PostgreSQL</p>
+        <p style="margin-top:8px;"><a href="./skills.html">Подробнее о стеке →</a></p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Образование</h2>
+      <ul class="entries">
+        <li><span class="org">НИУ МГСУ</span>, «Информационные системы и технологии» (инженер) <span class="when">— 2027</span></li>
+        <li><span class="org">Школа 21</span> (образовательный проект Сбербанка), направление DevOps, с 04.2025. 64 проведённых code review</li>
+        <li><span class="org">itProger</span>, «Full-stack разработчик», сертификат <span class="when">— 2024</span></li>
+        <li style="color:var(--muted);">Разработческий бэкграунд: C, C++, PHP, Python. English B1 — чтение технической документации.</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Связаться</h2>
+      <div>
+        <ul class="contact-list">
+          <li><span class="lbl">Telegram</span> <a href="https://t.me/gisellet3" target="_blank" rel="noopener">@gisellet3</a></li>
+          <li><span class="lbl">Почта</span> <a href="mailto:m.s.gerasimov@mail.ru">m.s.gerasimov@mail.ru</a></li>
+          <li><span class="lbl">Телефон</span> <a href="tel:+79645840973">+7 (964) 584-09-73</a></li>
+          <li><span class="lbl">GitHub</span> <a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">github.com/MaximGerasimov1</a></li>
+        </ul>
+        <div class="actions">
+          <a class="btn" href="https://t.me/gisellet3" target="_blank" rel="noopener">Написать в Telegram</a>
+          <a class="btn btn--ghost" href="./contacts.html">Все контакты</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="mailto:m.s.gerasimov@mail.ru">Почта</a></li>
+      <li><a href="https://hh.ru/resume/8d4c6741ff0eeb13270039ed1f506d357a5465" target="_blank" rel="noopener">hh.ru</a></li>
+      <li><a href="./resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
 </body>
 </html>
-
-

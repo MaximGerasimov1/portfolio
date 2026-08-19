@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python-приложение за обратным прокси Nginx — Максим Герасимов</title>
+<meta name="description" content="Тестовое задание: два контейнера с ужесточёнными настройками — non-root, read-only ФС, cap_drop ALL, старт по healthcheck, конфигурация через переменные окружения.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/docker-nginx-proxy.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-приложение за обратным прокси Nginx">
+<meta property="og:description" content="Тестовое задание: два контейнера с ужесточёнными настройками — non-root, read-only ФС, cap_drop ALL, старт по healthcheck, конфигурация через переменные окружения.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/docker-nginx-proxy.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">containers</span></div>
+      <h1 class="case__title">Python-приложение за обратным прокси Nginx</h1>
+      <p class="case__sub">Тестовое задание: контейнеризованное приложение,
+        доступное только через прокси, с ужесточёнными настройками обоих контейнеров.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Собрать HTTP-приложение и обратный прокси в двух контейнерах так, чтобы
+          наружу был опубликован только прокси, а конфигурация задавалась
+          переменными окружения, а не правкой образов.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Схема</h2>
+      <div>
+        <figure class="figure">
+          <svg viewBox="0 0 720 150" role="img" aria-label="Клиент обращается к контейнеру nginx на порту 80, nginx проксирует запрос в контейнер backend по внутренней сети Docker" style="width:100%;height:auto;">
+            <defs>
+              <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="#6C7794"/>
+              </marker>
+            </defs>
+            <rect x="8" y="46" width="132" height="58" rx="6" fill="#F1F2F5" stroke="#E3E5E9"/>
+            <text x="74" y="72" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#1A1D23">Клиент</text>
+            <text x="74" y="90" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">curl / браузер</text>
+
+            <line x1="146" y1="75" x2="222" y2="75" stroke="#6C7794" stroke-width="1.5" marker-end="url(#ar1)"/>
+            <text x="184" y="66" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">:80</text>
+
+            <rect x="228" y="26" width="200" height="98" rx="6" fill="#FFFFFF" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="328" y="52" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1A1D23">nginx</text>
+            <text x="328" y="72" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">обратный прокси</text>
+            <text x="328" y="90" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">uid 101 · cap_drop ALL</text>
+            <text x="328" y="108" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">только GET HEAD OPTIONS</text>
+
+            <line x1="434" y1="75" x2="510" y2="75" stroke="#6C7794" stroke-width="1.5" marker-end="url(#ar1)"/>
+            <text x="472" y="66" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">:8080</text>
+
+            <rect x="516" y="26" width="196" height="98" rx="6" fill="#FFFFFF" stroke="#2E3A5C" stroke-width="1.5"/>
+            <text x="614" y="52" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#1A1D23">backend</text>
+            <text x="614" y="72" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">python:3.11-slim</text>
+            <text x="614" y="90" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">non-root · read-only FS</text>
+            <text x="614" y="108" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#6C7178">healthcheck</text>
+
+            <rect x="228" y="12" width="484" height="126" rx="8" fill="none" stroke="#E3E5E9" stroke-dasharray="4 4"/>
+            <text x="470" y="8" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10.5" fill="#9AA0A8">внутренняя сеть Compose · 172.20.0.0/24</text>
+          </svg>
+          <figcaption>Порт публикует только прокси; бэкенд доступен исключительно изнутри сети Compose.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Изоляция бэкенда.</strong> Приложение не публикует портов
+            и отвечает только на запросы из внутренней сети Compose — обратиться
+            к нему с хоста напрямую нельзя.</li>
+          <li><strong>Оба контейнера без root.</strong> В образе бэкенда создан
+            отдельный пользователь и указан <code>USER</code>; nginx запускается
+            под <code>uid 101</code>.</li>
+          <li><strong>Файловая система только на чтение.</strong> <code>read_only: true</code>,
+            а каталоги, куда действительно нужна запись — <code>/tmp</code>,
+            <code>/var/cache/nginx</code>, <code>/var/run</code> — вынесены в tmpfs.</li>
+          <li><strong>Снятые привилегии.</strong> <code>cap_drop: ALL</code> и
+            <code>no-new-privileges</code>: контейнер лишён неиспользуемых
+            возможностей ядра и не может повысить права.</li>
+          <li><strong>Порядок старта по готовности.</strong> <code>healthcheck</code>
+            у бэкенда и <code>depends_on: condition: service_healthy</code> у прокси —
+            nginx поднимается только когда приложение действительно отвечает,
+            а не когда процесс просто запустился.</li>
+          <li><strong>Конфигурация снаружи.</strong> Порты и имена контейнеров
+            вынесены в <code>.env</code>; версии базовых образов зафиксированы,
+            чтобы <code>latest</code> не подменил базовый слой.</li>
+          <li><strong>Настройка прокси.</strong> <code>server_tokens off</code>,
+            ограничение методов через <code>limit_except</code>, таймауты на чтение,
+            отправку и удержание соединения, проброс <code>X-Real-IP</code>
+            и <code>X-Forwarded-For</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Сервис поднимается одной командой и в одинаковом виде на любой машине
+            с Docker.</li>
+          <li>Поверхность атаки сведена к одному опубликованному порту: процессы
+            не имеют root, корневая ФС неизменяема, лишние capabilities сняты.</li>
+          <li>Прокси не стартует раньше приложения — гонки при запуске исключены.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Docker</li><li>Docker Compose</li><li>Nginx</li><li>Python 3.11</li>
+        <li>healthcheck</li><li>tmpfs</li><li>capabilities</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+        <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/docker-nginx-proxy" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./k8s-cicd-pipeline.html">← CI/CD в Kubernetes</a>
+      <a href="./sqlite-build-automation.html">Сборка нативной библиотеки →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

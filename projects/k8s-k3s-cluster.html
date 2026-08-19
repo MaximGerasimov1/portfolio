@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Собственный кластер k3s: Ingress, TLS и постоянное хранилище — Максим Герасимов</title>
+<meta name="description" content="Кластер k3s из трёх узлов без Traefik, ingress-nginx единой точкой входа, cert-manager с автопродлением сертификата, PV и PVC для базы данных.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/k8s-k3s-cluster.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Собственный кластер k3s: Ingress, TLS и постоянное хранилище">
+<meta property="og:description" content="Кластер k3s из трёх узлов без Traefik, ingress-nginx единой точкой входа, cert-manager с автопродлением сертификата, PV и PVC для базы данных.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/k8s-k3s-cluster.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">orchestration</span></div>
+      <h1 class="case__title">Собственный кластер k3s: Ingress, TLS и постоянное хранилище</h1>
+      <p class="case__sub">Переход с одноузлового minikube на самостоятельно
+        собранный кластер из трёх узлов с единой точкой входа по HTTPS.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>В предыдущем проекте приложение жило в minikube: доступ к сервисам шёл
+          через туннели <code>minikube service</code>, а данные Postgres пропадали
+          вместе с подом. Нужно было собрать многоузловой кластер, дать приложению
+          одну точку входа по доменному имени с TLS и сделать так, чтобы база
+          переживала пересоздание пода.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Собрал кластер k3s из трёх узлов.</strong>
+            <code>Vagrantfile</code> поднимает ВМ в приватной сети и запускает
+            provision-скрипты: на мастере <code>k3s server</code> со снятым штатным
+            Traefik (<code>--disable=traefik</code>), на воркерах
+            <code>k3s agent</code> с подключением по <code>K3S_URL</code>
+            и общему токену. Скрипт мастера сразу раскладывает kubeconfig
+            в домашний каталог пользователя, чтобы <code>kubectl</code> работал
+            без <code>sudo</code>.</li>
+          <li><strong>Поставил ingress-nginx вместо Traefik</strong> — официальным
+            манифестом контроллера — и сделал его единой точкой входа на портах
+            80 и 443.</li>
+          <li><strong>Настроил выпуск сертификатов.</strong> Установил cert-manager,
+            описал <code>ClusterIssuer</code> (self-signed) и объект
+            <code>Certificate</code> на wildcard-имя со сроком действия 90 дней
+            и обновлением за 10 дней до конца. cert-manager сам следит за секретом
+            и перевыпускает пару ключей — обновлять сертификат руками не нужно.</li>
+          <li><strong>Описал Ingress</strong> для двух публичных путей приложения
+            (авторизация и gateway), привязав его к ingress-nginx и выпущенному
+            сертификату. Внутренние сервисы наружу не выставлены.</li>
+          <li><strong>Вынес данные Postgres на узел.</strong> Описал
+            <code>PersistentVolume</code> (hostPath, 5 Gi) и
+            <code>PersistentVolumeClaim</code>; каталог под данные создаётся
+            provision-скриптом воркера.</li>
+          <li><strong>Развернул Prometheus Operator</strong> в отдельном неймспейсе
+            для сбора метрик кластера.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Фрагмент</h2>
+      <div class="code-pair">
+        <div>
+          <p class="code-label"># k3s-master.sh — сервер без штатного Traefik</p>
+<pre class="code"><code>curl -sfL https://get.k3s.io | \
+  INSTALL_K3S_EXEC="server \
+    --disable=traefik \
+    --node-ip=192.168.33.10 \
+    --token=$K3S_TOKEN" sh -</code></pre>
+        </div>
+        <div>
+          <p class="code-label"># certificate.yaml — автообновление</p>
+<pre class="code"><code>spec:
+  secretName: my-tls-keys
+  duration: 2160h     # 90 дней
+  renewBefore: 240h   # за 10 дней до конца
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Приложение доступно снаружи по одному доменному имени поверх HTTPS —
+            вместо набора туннелей к каждому сервису.</li>
+          <li>Сертификат перевыпускается автоматически, ручных операций
+            с ключами нет.</li>
+          <li>Данные Postgres не теряются при пересоздании пода.</li>
+          <li>Конфигурация кластера воспроизводима: <code>vagrant up</code> собирает
+            те же три узла с теми же версиями компонентов.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>k3s</li><li>Kubernetes</li><li>ingress-nginx</li><li>cert-manager</li>
+        <li>PersistentVolume / PVC</li><li>Prometheus Operator</li>
+        <li>Vagrant</li><li>Bash</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/k8s-k3s-cluster" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./k8s-manifests.html">← Переезд в Kubernetes</a>
+      <a href="./k8s-helm-kustomize.html">Kustomize и Helm →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

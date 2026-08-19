@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Герасимов Максим — DevOps-инженер</title>
+<style>
+:root{
+  /* ═══ ЕДИНСТВЕННАЯ РУЧКА ПЛОТНОСТИ ═══
+     Безопасный диапазон 8.4–9.2pt. Шаг 0.2pt ≈ 6 мм высоты.
+     Если документ уехал на вторую страницу — уменьши на 0.2.
+     Если внизу много пустоты — увеличь на 0.2. Значение
+     продублировано в @media print ниже, менять нужно оба. */
+  font-size: 8.6pt;
+
+  --ink:        #1A1D23;
+  --ink-soft:   #33383F;
+  --muted:      #6C7178;
+  --faint:      #9AA0A8;
+  --accent:     #2E3A5C;
+  --accent-dim: #6C7794;
+  --rule:       #E3E5E9;
+  --rule-soft:  #EFF0F3;
+  --paper:      #FFFFFF;
+  --backdrop:   #E7E8EB;
+
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Noto Sans", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --rail: 21mm;
+  --gap:  6mm;
+  --sec:  2.35mm;
+}
+
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; }
+
+body{
+  background: var(--backdrop);
+  font-family: var(--sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+p{ orphans: 2; widows: 2; }
+
+.sheet{
+  width: 210mm;
+  min-height: 297mm;
+  margin: 10mm auto;
+  padding: 13mm 13mm 11mm;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgba(20,24,32,.10), 0 12px 32px rgba(20,24,32,.14);
+}
+
+/* ─────────────── шапка ─────────────── */
+
+.masthead{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  column-gap: 10mm;
+  padding-bottom: 3.2mm;
+  border-bottom: 1px solid var(--ink);
+}
+
+.name{
+  margin: 0;
+  font-size: 2.30rem;
+  font-weight: 650;
+  letter-spacing: -.021em;
+  line-height: 1.05;
+}
+.role{
+  margin: 1.4mm 0 0;
+  font-size: 1.12rem;
+  font-weight: 550;
+  letter-spacing: .005em;
+  color: var(--accent);
+}
+.locale{
+  margin: 1.0mm 0 0;
+  font-size: .90rem;
+  color: var(--muted);
+}
+.contacts{
+  text-align: right;
+  font-size: .86rem;
+  line-height: 1.46;
+  color: var(--ink-soft);
+  font-style: normal;
+}
+.contacts a{ color: inherit; text-decoration: none; }
+.contacts .link{ color: var(--accent); }
+.contacts .tel{ font-variant-numeric: tabular-nums; letter-spacing: .005em; }
+
+/* ─────────────── сетка «ключ → значение» ─────────────── */
+
+.row{
+  display: grid;
+  grid-template-columns: var(--rail) 1fr;
+  column-gap: var(--gap);
+  align-items: start;
+}
+
+.key{
+  margin: 0;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--faint);
+  line-height: 1.42;
+  padding-top: .7mm;
+}
+
+/* ─────────────── аннотация ─────────────── */
+
+.lede{
+  padding: 3.3mm 0 3.5mm;
+  border-bottom: 1px solid var(--rule);
+}
+.lede p{
+  margin: 0;
+  font-size: 1.04rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.lede strong{ font-weight: 600; color: var(--accent); }
+
+/* ─────────────── секции ─────────────── */
+
+.section{
+  padding: var(--sec) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.section.last{ border-bottom: 0; padding-bottom: 0; }
+
+/* стек */
+
+.stack{ display: grid; row-gap: .78mm; }
+.stack p{
+  margin: 0;
+  font-size: .88rem;
+  line-height: 1.42;
+  color: var(--ink-soft);
+}
+.stack .cat{ font-weight: 600; color: var(--ink); }
+.stack .dash{ color: var(--faint); }
+
+/* проекты */
+
+.framing{
+  margin: 0 0 2.7mm;
+  font-size: .90rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.framing a{ color: var(--accent); text-decoration: none; }
+
+.project{
+  break-inside: avoid;
+  page-break-inside: avoid;
+  padding-top: 1.75mm;
+}
+.project:first-of-type{ padding-top: 0; }
+
+.layer{
+  font-family: var(--mono);
+  font-size: .76rem;
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: var(--accent-dim);
+  line-height: 1.4;
+  padding-top: .4mm;
+}
+
+.project h3{
+  margin: 0 0 1.2mm;
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -.004em;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.project p{
+  margin: 0;
+  font-size: .945rem;
+  line-height: 1.40;
+  color: var(--ink-soft);
+}
+.project .t{ font-weight: 600; color: var(--ink); white-space: nowrap; }
+.project .nb{ white-space: nowrap; }
+.project .outcome{
+  margin: 1.0mm 0 0;
+  font-size: .90rem;
+  line-height: 1.37;
+  color: var(--ink-soft);
+}
+.project .outcome .rlbl{ font-weight: 600; color: var(--accent); }
+.project code{
+  font-family: var(--mono);
+  font-size: .885em;
+  padding: 0 .16em;
+  color: var(--accent);
+  background: #F3F4F7;
+  border-radius: 2px;
+}
+
+/* нижняя полоса: образование + дополнительно */
+
+.band{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 7mm;
+}
+.band .col{ break-inside: avoid; page-break-inside: avoid; }
+.band h2{
+  margin: 0 0 1.9mm;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.band ul{ margin: 0; padding: 0; list-style: none; display: grid; row-gap: 1.5mm; }
+.band li{
+  font-size: .94rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.band .org{ font-weight: 600; color: var(--ink); }
+.band .lbl{ color: var(--muted); }
+.band .when{ color: var(--faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ─────────────── экранный превью ─────────────── */
+
+@media screen and (max-width: 232mm){
+  .sheet{ width: auto; max-width: 210mm; margin: 0 auto; box-shadow: none; }
+}
+@media screen and (max-width: 620px){
+  :root{ font-size: 10.4pt; --rail: 0mm; --gap: 0mm; }
+  body{ background: var(--paper); }
+  .sheet{ min-height: 0; padding: 8mm 6mm 10mm; }
+  .masthead{ grid-template-columns: 1fr; row-gap: 3.5mm; align-items: start; }
+  .contacts{ text-align: left; }
+  .row{ grid-template-columns: 1fr; row-gap: 1.8mm; }
+  .key, .layer{ padding-top: 0; }
+  .band{ grid-template-columns: 1fr; row-gap: 5mm; }
+  .name{ font-size: 1.95rem; }
+}
+
+/* ─────────────── печать ─────────────── */
+
+@page{ size: A4 portrait; margin: 0; }
+
+@media print{
+  :root{ font-size: 8.6pt; }     /* ← дубль ручки плотности */
+  body{ background: var(--paper); }
+  .sheet{
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 13mm 13mm 11mm;
+    box-shadow: none;
+  }
+  a{ color: inherit; text-decoration: none; }
+  .contacts .link, .framing a{ color: var(--accent); }
+  .project, .band .col{ break-inside: avoid; page-break-inside: avoid; }
+  *{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<main class="sheet">
+
+  <header class="masthead">
+    <div>
+      <h1 class="name">Герасимов Максим</h1>
+      <p class="role">DevOps-инженер</p>
+      <p class="locale">Москва · гибрид / удалённый формат / офис</p>
+    </div>
+    <address class="contacts">
+      <a class="tel" href="tel:+79645840973">+7 (964) 584-09-73</a><br>
+      <a href="mailto:m.s.gerasimov@mail.ru">m.s.gerasimov@mail.ru</a><br>
+      <a href="https://t.me/gisellet3">Telegram: @gisellet3</a><br>
+      <a class="link" href="https://github.com/MaximGerasimov1">github.com/MaximGerasimov1</a><br>
+      <a class="link" href="https://maximgerasimov1.github.io/portfolio/">maximgerasimov1.github.io/portfolio</a>
+    </address>
+  </header>
+
+  <section class="lede row">
+    <div class="key"></div>
+    <p>Студент 4 курса НИУ МГСУ, с апреля 2025 года — направление DevOps в Школе 21 (образовательный проект Сбербанка). Последовательно развивал инфраструктуру одного микросервисного приложения — от развёртывания на парке виртуальных машин до кластера Kubernetes с CI/CD-пайплайном и настроенным алертингом. 13 проектов за 16 месяцев параллельно с очной учёбой; <strong>1 место в рейтинге среди 250 участников</strong> отборочного интенсива.</p>
+  </section>
+
+  <section class="section row">
+    <h2 class="key">Технический<br>стек</h2>
+    <div class="stack">
+      <p><span class="cat">Оркестрация и контейнеризация</span> <span class="dash">—</span> Docker, Docker Compose, Docker Swarm, Kubernetes, Helm, Kustomize</p>
+      <p><span class="cat">CI/CD</span> <span class="dash">—</span> GitLab CI, GitLab Runner, Git</p>
+      <p><span class="cat">IaC и конфигурация</span> <span class="dash">—</span> Ansible, Vagrant</p>
+      <p><span class="cat">Мониторинг</span> <span class="dash">—</span> Prometheus, Grafana, Loki, Alertmanager</p>
+      <p><span class="cat">ОС и сети</span> <span class="dash">—</span> Linux (Ubuntu, Debian), systemd, Nginx, SSH, сети (подсети, маршрутизация, iptables, DNS), виртуализация</p>
+      <p><span class="cat">Языки и данные</span> <span class="dash">—</span> Bash, Python, SQL, PostgreSQL</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="row">
+      <h2 class="key">Инженерные<br>проекты</h2>
+      <p class="framing">Учебная траектория DevOps: от администрирования Linux и сетевого стенда (5 виртуальных машин, 2 маршрутизатора, статическая и динамическая маршрутизация, правила файрвола) до Kubernetes с CI/CD и мониторингом. Последние семь — на одной системе: микросервисное приложение из 7 сервисов (Spring Boot, PostgreSQL, RabbitMQ). Четыре раскрыты ниже, реализация — <a href="https://github.com/MaximGerasimov1">на GitHub</a> и <a href="https://maximgerasimov1.github.io/portfolio/">в портфолио</a>.</p>
+    </div>
+
+    <article class="project row">
+      <div class="layer">ci/cd</div>
+      <div>
+        <h3>CI/CD-пайплайн в Kubernetes</h3>
+        <p>Развернул <span class="t">GitLab Runner</span> внутри кластера и написал пайплайн: сборка, модульные тесты на <span class="t">Maven</span>, интеграционные на <span class="t">Postman</span>, деплой. Стадии сборки и тестов запускаются при пуше в ветку с префиксом <code>feature</code>, выкатка на stage — по пушу тега с ручным подтверждением, через <code>helm upgrade</code>.</p>
+        <p class="outcome"><span class="rlbl">Результат:</span> ошибки сборки и интеграции выявляются до выката, поставка воспроизводима, а ручные операции сведены к подтверждению релиза по тегу.</p>
+      </div>
+    </article>
+
+    <article class="project row">
+      <div class="layer">orchestration</div>
+      <div>
+        <h3>Kubernetes: развёртывание, шаблонизация, окружения</h3>
+        <p>Развернул то же приложение в кластере: deployments, services, configmaps, secrets, ingress, сертификат через <span class="t">cert-manager</span> и issuer. Собрал конфигурацию двумя способами — <span class="t">Kustomize</span> (база и оверлеи) и <span class="t">Helm</span> (шаблонизация через values). Ранее на <span class="t">k3s</span>: отключил штатный traefik, поставил ingress-nginx, вынес бэкап БД на узел через pv и pvc, написал скрипт для замера времени пересоздания подов. Реализовано одно окружение — production.</p>
+        <p class="outcome"><span class="rlbl">Результат:</span> конфигурация не дублируется — dev, stage и test добавляются оверлеем или values, а замер <span class="nb">rolling update</span> и recreate показал, какая стратегия даёт меньший простой.</p>
+      </div>
+    </article>
+
+    <article class="project row">
+      <div class="layer">observability</div>
+      <div>
+        <h3>Мониторинг и алертинг</h3>
+        <p>Настроил стек наблюдаемости для того же приложения в Docker Swarm. <span class="t">Prometheus</span> собирает метрики четырёх сервисов через Spring Actuator плюс метрики узлов, контейнеров и доступности эндпоинтов через экспортеры; цели обнаруживаются через внутренний DNS Swarm, а не статическим списком. Централизованный сбор логов: Promtail передаёт их в <span class="t">Loki</span>. Собрал в <span class="t">Grafana</span> дашборд на PromQL и LogQL. Написал три правила алертинга — память узла, память контейнера, загрузка CPU — с уведомлениями в Telegram и на почту через <span class="t">Alertmanager</span>.</p>
+        <p class="outcome"><span class="rlbl">Результат:</span> метрики и логи собраны в одном месте — причина сбоя локализуется без обхода узлов, а исчерпание памяти или CPU видно по алерту до отказа сервиса.</p>
+      </div>
+    </article>
+
+    <article class="project row">
+      <div class="layer">provisioning</div>
+      <div>
+        <h3>Инфраструктура как код: Ansible</h3>
+        <p>Автоматизировал развёртывание того же приложения на парке виртуальных машин. Поднял стенд на <span class="t">Vagrant</span>, написал роли <span class="t">Ansible</span> для приложения, веб-сервера и PostgreSQL с шаблонами Jinja2 под конфиги и systemd-юниты, распределил компоненты по узлам. На втором стенде поднял <span class="t">Consul</span> для service discovery. Нашёл и исправил ошибку типизации Long/Integer в контроллере Spring при интеграции с PostgreSQL.</p>
+        <p class="outcome"><span class="rlbl">Результат:</span> парк машин и приложение разворачиваются одной командой — конфигурация узлов не расходится и не зависит от ручной настройки.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="section last band">
+    <div class="col">
+      <h2>Образование</h2>
+      <ul>
+        <li><span class="org">Национальный исследовательский Московский государственный строительный университет</span>, «Информационные системы и технологии» (инженер) <span class="when">— 2027</span></li>
+        <li><span class="org">Школа 21</span> (образовательный проект Сбербанка), направление DevOps, с 04.2025. 64 проведённых code review</li>
+        <li><span class="org">itProger</span>, «Full-stack разработчик», сертификат <span class="when">— 2024</span></li>
+      </ul>
+    </div>
+    <div class="col">
+      <h2>Дополнительно</h2>
+      <ul>
+        <li><b>Разработческий бэкграунд:</b> C, C++, PHP, Python — учебные проекты и курс full-stack разработки, до перехода в инфраструктуру</li>
+        <li><b>English:</b> B1 — чтение технической документации</li>
+        <li><b>Спорт:</b> плавание, 11 лет, КМС</li>
+        <!-- <li><span class="lbl">Спорт:</span> плавание, 11 лет, КМС</li> -->
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Базовое администрирование Linux-сервера — Максим Герасимов</title>
+<meta name="description" content="Настройка сервера Ubuntu с нуля: статическая сеть, защищённый SSH, systemd, служба времени, диагностика дисков и системных журналов.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/linux-server-baseline.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Базовое администрирование Linux-сервера">
+<meta property="og:description" content="Настройка сервера Ubuntu с нуля: статическая сеть, защищённый SSH, systemd, служба времени, диагностика дисков и системных журналов.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/linux-server-baseline.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">os</span></div>
+      <h1 class="case__title">Базовое администрирование Linux-сервера</h1>
+      <p class="case__sub">Отправная точка траектории: сервер Ubuntu из установочного образа приводится
+        в состояние, пригодное для дальнейшей работы.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Получить сервер и настроить его так, чтобы на него можно было опираться:
+          предсказуемая сеть, безопасный удалённый доступ, корректное время,
+          понятные средства диагностики диска и системных событий.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Установка и учётные записи.</strong> Установил Ubuntu Server,
+            создал пользователя и выдал права через <code>sudo</code>, разобрал файл
+            <code>sudoers</code> и правила выдачи прав.</li>
+          <li><strong>Сеть.</strong> Определил интерфейсы, получил адрес от DHCP,
+            затем задал статические <code>ip</code>, <code>gw</code> и <code>dns</code>
+            и проверил, что настройки переживают перезагрузку. Установил hostname,
+            временную зону и службу синхронизации времени.</li>
+          <li><strong>Удалённый доступ.</strong> Установил и настроил <code>sshd</code>:
+            смена порта, запрет входа под root, проверка подключения после каждого
+            изменения конфигурации — чтобы не отрезать себе доступ.</li>
+          <li><strong>Диагностика.</strong> Разобрал вывод <code>top</code> и <code>htop</code>
+            (load average, состояния процессов), дисковую подсистему через
+            <code>fdisk -l</code>, <code>df -Th</code>, <code>du</code> и <code>ncdu</code>.</li>
+          <li><strong>Журналы.</strong> Работа с <code>/var/log/dmesg</code>,
+            <code>syslog</code> и <code>auth.log</code>: фильтрация событий и поиск
+            причины по логам, а не по догадкам.</li>
+          <li><strong>Автоматизация.</strong> Настройка периодических задач через <code>cron</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Воспроизводимая базовая конфигурация: сеть задана статически и не меняется
+            после перезагрузки, доступ настроен без входа под root.</li>
+          <li>Состояние диска и системных событий читается штатными утилитами —
+            без установки дополнительных инструментов на сервер.</li>
+          <li>Это база, на которую опираются все последующие проекты.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Linux (Ubuntu Server)</li><li>systemd</li><li>SSH / sshd</li><li>cron</li>
+        <li>top / htop</li><li>fdisk</li><li>df / du / ncdu</li><li>системные журналы</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/linux-server-baseline" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <span></span>
+      <a href="./linux-network-lab.html">Сетевой стенд →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

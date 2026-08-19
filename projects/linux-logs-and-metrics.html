@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Логи, обслуживание файловой системы и первые метрики — Максим Герасимов</title>
+<meta name="description" content="Воспроизведение переполнения диска, выборочная очистка по трём критериям, разбор access-логов через GoAccess, стек Prometheus и Grafana, собственный экспортёр.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/linux-logs-and-metrics.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Логи, обслуживание файловой системы и первые метрики">
+<meta property="og:description" content="Воспроизведение переполнения диска, выборочная очистка по трём критериям, разбор access-логов через GoAccess, стек Prometheus и Grafana, собственный экспортёр.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/linux-logs-and-metrics.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">monitoring</span></div>
+      <h1 class="case__title">Логи, обслуживание файловой системы и первые метрики</h1>
+      <p class="case__sub">Развитие Bash-инструментария до задач эксплуатации:
+        нагрузка, очистка, анализ логов, наблюдение за ресурсами во времени.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Научиться воспроизводить и разбирать типичные эксплуатационные ситуации:
+          переполнение диска, разбор access-логов веб-сервера, наблюдение
+          за загрузкой CPU, RAM и дисковых операций — не единичным снимком,
+          а во времени.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Воспроизведение нагрузки на ФС.</strong> Скрипты, создающие
+            заданную структуру каталогов и файлов со случайными именами и датами —
+            чтобы отрабатывать переполнение диска на стенде, а не в бою.</li>
+          <li><strong>Очистка по трём критериям.</strong> Удаление созданных объектов
+            по лог-файлу предыдущего запуска, по диапазону даты и времени
+            и по маске имени. Каждый режим — отдельный модуль с собственной
+            валидацией ввода.</li>
+          <li><strong>Генерация и анализ логов.</strong> Генератор HTTP access-логов
+            в формате Combined и их разбор: собственные Bash-парсеры (топ IP,
+            коды ответов, методы) и внешний анализатор GoAccess.</li>
+          <li><strong>Стек мониторинга.</strong> Развернул Prometheus и Grafana,
+            настроил сбор и визуализацию CPU, RAM и дисковых операций.</li>
+          <li><strong>Собственный экспортёр.</strong> Написал экспортёр метрик
+            на Bash для параметров, которых нет в стандартных экспортёрах.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Появился воспроизводимый цикл: довести стенд до проблемного состояния,
+            увидеть это на графиках, найти виновные файлы по логу и удалить
+            их выборочно — а не <code>rm -rf</code> наугад.</li>
+          <li>Состояние системы стало наблюдаемым во времени; это первый проект,
+            где решение принимается по графику, а не по одной команде в терминале.</li>
+          <li>Отсюда начинается линия наблюдаемости, которая доводится до
+            <a href="./observability-stack.html">полноценного стека с логами и алертингом</a>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Bash</li><li>Prometheus</li><li>Grafana</li><li>GoAccess</li>
+        <li>Nginx access logs</li><li>собственный экспортёр</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/linux-logs-and-metrics" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./bash-system-report.html">← Bash-инструментарий</a>
+      <a href="./docker-nginx-fastcgi.html">Контейнеризация →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

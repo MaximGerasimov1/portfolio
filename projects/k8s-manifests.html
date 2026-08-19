@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Развёртывание микросервисного приложения в Kubernetes — Максим Герасимов</title>
+<meta name="description" content="Собственные манифесты Kubernetes: ConfigMap и Secret, деплойменты и сервисы девяти компонентов, замер времени выката при Recreate и RollingUpdate.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/projects/k8s-manifests.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Развёртывание микросервисного приложения в Kubernetes">
+<meta property="og:description" content="Собственные манифесты Kubernetes: ConfigMap и Secret, деплойменты и сервисы девяти компонентов, замер времени выката при Recreate и RollingUpdate.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/projects/k8s-manifests.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">К основному содержанию</a>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="./index.html" aria-current="page">Проекты</a></li>
+      <li><a href="../skills.html">Стек</a></li>
+      <li><a href="../about_me.html">Обо мне</a></li>
+      <li><a href="../contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="main">
+  <div class="container case">
+    <p class="case__crumb"><a href="./index.html">← Все проекты</a></p>
+
+    <header class="case__head">
+      <div class="case__badge"><span class="layer">orchestration</span></div>
+      <h1 class="case__title">Переезд микросервисного приложения в Kubernetes</h1>
+      <p class="case__sub">То же приложение описывается собственными манифестами
+        Kubernetes вместо стека Docker Swarm.</p>
+    </header>
+
+    <section class="section row">
+      <h2 class="key">Задача</h2>
+      <div class="prose">
+        <p>Приложение было описано под Docker Swarm — одним compose-файлом.
+          Нужно было перевести его на Kubernetes: описать конфигурацию, секреты,
+          поды и сервисы своими манифестами, а затем выяснить, как две стратегии
+          обновления влияют на простой приложения.</p>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Что сделано</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Разделил конфигурацию и секреты.</strong> Хосты и порты
+            сервисов, адреса Postgres и RabbitMQ, имена шести баз — в ConfigMap
+            <code>environments</code>. Пароль и логин БД, учётные данные RabbitMQ
+            и ключи межсервисной авторизации — в Secret <code>svc-secrets</code>.
+            Контейнеры получают их через <code>envFrom</code>, а не из захардкоженных
+            значений в деплойментах.</li>
+          <li><strong>Инициализация БД через ConfigMap.</strong> SQL-скрипт создания
+            шести баз положил во второй ConfigMap и примонтировал как том
+            в <code>/docker-entrypoint-initdb.d/</code> контейнера Postgres —
+            база поднимается с нужной схемой без ручных шагов.</li>
+          <li><strong>Описал деплойменты и сервисы</strong> для всех девяти
+            компонентов (postgres, rabbitmq и 7 сервисов приложения) в отдельном
+            неймспейсе, по одной реплике на компонент.</li>
+          <li><strong>Замерил время переразвёртывания.</strong> Написал
+            <code>deploy.sh</code>, который применяет манифесты и ждёт
+            <code>kubectl rollout status</code> по каждому деплойменту, засекая
+            общее время. Прогнал обновление образов дважды — со стратегией
+            <code>Recreate</code> и со <code>RollingUpdate</code>
+            (<code>maxUnavailable: 1</code>, <code>maxSurge: 1</code>) —
+            и сравнил результаты.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Фрагмент</h2>
+      <div class="code-pair">
+        <div>
+          <p class="code-label"># deploy.sh — замер времени выката</p>
+<pre class="code"><code>start_time=$SECONDS
+kubectl apply -f ./manifests/
+for deploy in $(kubectl get deployments \
+      -n basic-kuber -o name); do
+  kubectl rollout status "$deploy" -n basic-kuber
+done
+echo "Обновление: $(( SECONDS - start_time )) с."</code></pre>
+        </div>
+        <div>
+          <p class="code-label"># deployments.yaml — стратегия обновления</p>
+<pre class="code"><code>strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 1</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Результат</h2>
+      <div class="prose outcome">
+        <ul>
+          <li>Приложение разворачивается применением манифестов, без ручной настройки
+            контейнеров; конфигурация и секреты меняются отдельно от описания
+            деплойментов.</li>
+          <li>Схема базы создаётся автоматически при первом старте Postgres.</li>
+          <li>Замер показал, какая из двух стратегий даёт меньший простой при
+            обновлении образов — это стало основанием оставить
+            <code>RollingUpdate</code> стратегией по умолчанию.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Стек</h2>
+      <ul class="chips">
+        <li>Kubernetes</li><li>kubectl</li><li>minikube</li><li>ConfigMap</li>
+        <li>Secret</li><li>Deployment</li><li>Service</li><li>PostgreSQL</li>
+        <li>RabbitMQ</li><li>Bash</li>
+      </ul>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Код</h2>
+      <div class="actions" style="margin-top:0;">
+          <a class="btn btn--ghost" href="https://github.com/MaximGerasimov1/DevOps-Python-SQL/tree/master/devops_projects/k8s-manifests" target="_blank" rel="noopener">Репозиторий на GitHub</a>
+      </div>
+    </section>
+
+    <nav class="case-nav">
+      <a href="./observability-stack.html">← Мониторинг и алертинг</a>
+      <a href="./k8s-k3s-cluster.html">Кластер k3s →</a>
+    </nav>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./index.html">Все проекты</a></li>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="../resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

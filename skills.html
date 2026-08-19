@@ -1,128 +1,186 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My portfolio</title>
-    <link rel="stylesheet" href="./css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Технический стек — Максим Герасимов, DevOps</title>
+<meta name="description" content="Технический стек Junior DevOps: Linux и сети, Docker и Docker Swarm, Kubernetes, Helm, Kustomize, Ansible, GitLab CI, Prometheus, Grafana, Loki.">
+<link rel="canonical" href="https://maximgerasimov1.github.io/portfolio/skills.html">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Технический стек — Максим Герасимов, DevOps">
+<meta property="og:description" content="Инструменты со ссылками на проекты, в которых они применялись.">
+<meta property="og:url" content="https://maximgerasimov1.github.io/portfolio/skills.html">
+<meta property="og:image" content="https://maximgerasimov1.github.io/portfolio/img/me4.jpg">
+<meta property="og:locale" content="ru_RU">
+<link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-    <nav class="nav">
-        <div class="container">
-            <div class="nav-row">
-                <a href="./index.html" class="logo"><strong>My</strong> portfolio</a>
-                <ul class="nav-list">
-                    <li class="nav-list__item"><a href="./index.html" class="nav-list__link">Projects</a></li>
-                    <li class="nav-list__item"><a href="./skills.html" class="nav-list__link nav-list__link--active">Skills</a></li>
-                    <li class="nav-list__item"><a href="./contacts.html" class="nav-list__link">Contacts</a></li>
-                    <li class="nav-list__item"><a href="./about_me.html" class="nav-list__link">About me</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <main class="section">
-        <div class="container">
-            <h1 class="title-1" style="margin-bottom: 30px;">Professional Skills</h1>
+<a class="skip-link" href="#main">К основному содержанию</a>
 
-            <div class="skills-wrapper">
-                
-                <section class="skills-category">
-                    <h2 class="title-2">CI/CD & Orchestration</h2>
-                    <div class="skills-list">
-                        <span class="skill-tag">GitLab CI/CD</span>
-                        <span class="skill-tag">CI/CD Pipelines</span>
-                        <span class="skill-tag">Docker Swarm</span>
-                        <span class="skill-tag">Docker Compose</span>
-                        <span class="skill-tag">Portainer</span>
-                        <span class="skill-tag">HashiCorp Consul</span>
-                        <span class="skill-tag">Service Discovery</span>
-                        <span class="skill-tag">Envoy (Service Mesh)</span>
-                        <span class="skill-tag">Portainer</span>
-                    </div>
-                </section>
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="./index.html" class="brand">Максим Герасимов <span>· DevOps</span></a>
+    <ul class="nav-links">
+      <li><a href="./index.html">Главная</a></li>
+      <li><a href="./projects/index.html">Проекты</a></li>
+      <li><a href="./skills.html" aria-current="page">Стек</a></li>
+      <li><a href="./about_me.html">Обо мне</a></li>
+      <li><a href="./contacts.html">Контакты</a></li>
+    </ul>
+  </div>
+</nav>
 
-                <section class="skills-category">
-                    <h2 class="title-2">Development & Backend</h2>
-                    <div class="skills-list">
-                        <span class="skill-tag">C/C++ (Native)</span>
-                        <span class="skill-tag">PHP</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">MySQL / PostgreSQL</span>
-                        <span class="skill-tag">SQL</span>
-                        <span class="skill-tag">Nginx / Apache</span>
-                    </div>
-                </section>
+<main id="main">
+  <div class="container">
 
-                <section class="skills-category">
-                    <h2 class="title-2">Frontend Development</h2>
-                    <div class="skills-list">
-                        <span class="skill-tag">HTML5 / CSS3</span>
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">Vue JS</span>
-                        <span class="skill-tag">jQuery</span>
-                        <span class="skill-tag">SASS / SCSS</span>
-                        <span class="skill-tag">Gulp (Task Runner)</span>
-                        <span class="skill-tag">Bootstrap</span>
-                        <span class="skill-tag">Adaptive & Cross-browser Layout</span>
-                    </div>
-                </section>
+    <header class="page-head">
+      <h1 class="page-title">Технический стек</h1>
+    </header>
 
-                <section class="skills-category">
-                    <h2 class="title-2">Infrastructure & Automation</h2>
-                    <div class="skills-list">
-                        <span class="skill-tag">Ansible (Roles/Playbooks)</span>
-                        <span class="skill-tag">Infrastructure as Code (IaC)</span>
-                        <span class="skill-tag">Vagrant</span>
-                        <span class="skill-tag">Bash / PowerShell</span>
-                        <span class="skill-tag">Prometheus & Grafana</span>
-                        <span class="skill-tag">GoAccess / Log Analysis</span>
-                        <span class="skill-tag">Software Testing</span>
-                    </div>
-                </section>
+    <section class="section row">
+      <h2 class="key">Оркестрация<br>и контейнеры</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Docker, Dockerfile, Docker Compose</strong> — собственные образы,
+            многоконтейнерные сборки, запуск не от root, проверка образов Dockle
+            (<a href="./projects/docker-nginx-fastcgi.html">контейнеризация</a>).</li>
+          <li><strong>Docker Swarm</strong> — кластер из трёх узлов, стеки,
+            оверлейные сети, глобальные и реплицированные сервисы
+            (<a href="./projects/swarm-microservices.html">Docker Swarm</a>,
+            <a href="./projects/observability-stack.html">наблюдаемость</a>).</li>
+          <li><strong>Kubernetes</strong> — собственные манифесты, ConfigMap и Secret,
+            деплойменты, сервисы, стратегии обновления, PV/PVC, Ingress
+            (<a href="./projects/k8s-manifests.html">манифесты</a>,
+            <a href="./projects/k8s-k3s-cluster.html">кластер k3s</a>).</li>
+          <li><strong>k3s</strong> — сборка кластера из трёх узлов вручную,
+            ingress-nginx вместо Traefik, cert-manager
+            (<a href="./projects/k8s-k3s-cluster.html">кластер k3s</a>).</li>
+          <li><strong>Helm, Kustomize</strong> — чарт с генерацией сервисов
+            по values, база и оверлей, генераторы ConfigMap и Secret
+            (<a href="./projects/k8s-helm-kustomize.html">Kustomize и Helm</a>,
+            <a href="./projects/k8s-cicd-pipeline.html">CI/CD в Kubernetes</a>).</li>
+        </ul>
+      </div>
+    </section>
 
-                <section class="skills-category">
-                    <h2 class="title-2">Architecture & Networking</h2>
-                    <div class="skills-list">
-                        <span class="skill-tag">OOP Principles</span>
-                        <span class="skill-tag">MVC Pattern</span>
-                        <span class="skill-tag">TCP/IP & Networking</span>
-                        <span class="skill-tag">SSH Tunneling</span>
-                        <span class="skill-tag">Iptables (Firewall)</span>
-                        <span class="skill-tag">Static/Dynamic Routing</span>
-                        <span class="skill-tag">Dockle (Security)</span>
-                    </div>
-                </section>
+    <section class="section row">
+      <h2 class="key">CI/CD</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>GitLab CI</strong> — многостадийные пайплайны, правила запуска
+            по веткам и тегам, ручное подтверждение, артефакты и JUnit-отчёты
+            (<a href="./projects/gitlab-ci-basics.html">первый пайплайн</a>,
+            <a href="./projects/k8s-cicd-pipeline.html">CI/CD в Kubernetes</a>).</li>
+          <li><strong>GitLab Runner</strong> — на отдельной машине и как под
+            в Kubernetes-кластере с executor <code>kubernetes</code>, RBAC
+            и лимитами ресурсов (<a href="./projects/k8s-cicd-pipeline.html">CI/CD в Kubernetes</a>).</li>
+          <li><strong>Newman / Postman</strong> — функциональные тесты как стадия
+            пайплайна (<a href="./projects/k8s-cicd-pipeline.html">CI/CD в Kubernetes</a>).</li>
+          <li><strong>Git</strong> — ветвление по фиче, теги релизов, работа
+            с <code>.gitignore</code> и очистка индекса от попавших туда файлов.</li>
+        </ul>
+      </div>
+    </section>
 
-                <section class="skills-category">
-                    <h2 class="title-2">OS & Workflow</h2>
-                    <div class="skills-list">
-                        <span class="skill-tag">Linux (Ubuntu/Debian)</span>
-                        <span class="skill-tag">Linux Administration</span>
-                        <span class="skill-tag">Git / GitHub / GitLab</span>
-                        <span class="skill-tag">System Monitoring</span>
-                        <span class="skill-tag">English (A2 - Technical Reading)</span>
-                    </div>
-                </section>
+    <section class="section row">
+      <h2 class="key">IaC<br>и конфигурация</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Ansible</strong> — роли, плейбуки, инвентарь, шаблоны Jinja2
+            для конфигов и systemd-юнитов, handlers
+            (<a href="./projects/ansible-consul-provisioning.html">Ansible и Consul</a>).</li>
+          <li><strong>Vagrant</strong> — воспроизводимые стенды из 3–5 виртуальных
+            машин с provision-скриптами.</li>
+          <li><strong>HashiCorp Consul, Envoy</strong> — service discovery,
+            health checks, sidecar-прокси
+            (<a href="./projects/ansible-consul-provisioning.html">Ansible и Consul</a>).</li>
+        </ul>
+      </div>
+    </section>
 
-            </div>
-        </div>
-    </main>
+    <section class="section row">
+      <h2 class="key">Наблюдаемость</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Prometheus</strong> — scrape-конфигурации, обнаружение целей
+            через DNS, правила алертинга, PromQL
+            (<a href="./projects/linux-logs-and-metrics.html">логи и метрики</a>,
+            <a href="./projects/observability-stack.html">наблюдаемость</a>).</li>
+          <li><strong>Grafana</strong> — дашборды на PromQL и LogQL,
+            provisioning источников данных.</li>
+          <li><strong>Loki и Promtail</strong> — централизованный сбор логов
+            контейнеров со всех узлов кластера.</li>
+          <li><strong>Alertmanager</strong> — маршрутизация уведомлений,
+            собственные шаблоны сообщений, отправка в Telegram и на почту.</li>
+          <li><strong>Экспортёры</strong> — node_exporter, cAdvisor,
+            blackbox_exporter, а также собственный экспортёр на Bash.</li>
+          <li><strong>Spring Boot Actuator, Micrometer</strong> — прикладные
+            счётчики в коде сервисов.</li>
+        </ul>
+      </div>
+    </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__wrapper">
-                <ul class="social">
-                    <li class="social__item"><a href="https://vk.com/gmaxim2" target="_blank"><img src="./img/icons/vk.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://t.me/gisellet3" target="_blank"><img src="./img/icons/tg.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://github.com/dashboard" target="_blank"><img src="./img/icons/gitHub.svg" alt="link"></a></li>
-                    <li class="social__item"><a href="https://hh.ru/resume/8d4c6741ff0eeb13270039ed1f506d357a5465?from=share_ios" target="_blank"><img src="./img/icons/hhru.png" alt="link"></a></li>
-                </ul>
-                <div class="copyright">
-                    <p>©2025 frontend-dev.com</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <section class="section row">
+      <h2 class="key">ОС и сети</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Linux (Ubuntu, Debian)</strong> — администрирование,
+            systemd, права доступа, cron, работа с журналами.</li>
+          <li><strong>Сети</strong> — подсети и маски, статическая и динамическая
+            маршрутизация, DHCP, DNS, NAT, iptables, SSH-туннели, диагностика
+            через traceroute, tcpdump и iperf3
+            (<a href="./projects/linux-network-lab.html">сетевой стенд</a>).</li>
+          <li><strong>Nginx</strong> — обратное проксирование, ограничение доступа
+            к внутренним API, разбор access-логов.</li>
+          <li><strong>Виртуализация</strong> — libvirt / Vagrant, стенды
+            из нескольких машин.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Языки<br>и данные</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Bash</strong> — основной инструмент автоматизации:
+            модульные скрипты, валидация ввода, провижининг, замеры.</li>
+          <li><strong>Python</strong> — учебные задачи по обработке данных
+            и автоматизации.</li>
+          <li><strong>SQL, PostgreSQL</strong> — выборки, соединения, агрегация;
+            инициализация схемы БД при развёртывании.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section row">
+      <h2 class="key">Бэкграунд</h2>
+      <div class="prose">
+        <p>До перехода в инфраструктуру — разработка: C и C++ (алгоритмы,
+          работа с памятью), PHP (ООП, MVC), вёрстка. Курс full-stack разработки
+          на itProger, 2024. Этот опыт не заявляется как инженерная специализация,
+          но помогает понимать, что именно едет по пайплайну и почему падает сборка.</p>
+        <p style="margin-top:12px;"><strong>English</strong> — B1, чтение технической
+          документации.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links">
+      <li><a href="./projects/index.html">Проекты</a></li>
+      <li><a href="https://github.com/MaximGerasimov1" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://t.me/gisellet3" target="_blank" rel="noopener">Telegram</a></li>
+      <li><a href="mailto:m.s.gerasimov@mail.ru">Почта</a></li>
+      <li><a href="./resume/Gerasimov_Maxim_DevOps.pdf">Резюме (PDF)</a></li>
+    </ul>
+    <p class="footer-note">Максим Герасимов · Junior DevOps / Infrastructure Engineer · 2026</p>
+  </div>
+</footer>
+
 </body>
 </html>
